@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  Badge,
   Icon,
   Layout,
 } from 'antd'
@@ -30,6 +31,14 @@ const Header = (props) => {
       >
         this is title
       </Div>
+      <Badge
+        status='success'
+        text='Aspen Network'
+        style={{
+          float: 'right',
+          padding: '0 20px',
+        }}
+      />
     </HeaderWrapper>
   )
 }
