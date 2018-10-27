@@ -46,6 +46,7 @@ export default class QuickEditor extends React.Component {
           {localStorage.getItem('url')}
         </P>
         <TextArea
+          name='content'
           value={this.state.content}
           rows={3}
           autosize={false}
@@ -56,6 +57,10 @@ export default class QuickEditor extends React.Component {
           style={{
             float: 'right',
             marginTop: '10px',
+          }}
+          onClick={() => {
+            this.props.addComment(this.state.content)
+            this.setState({ content: '' })
           }}
         >
           Submit

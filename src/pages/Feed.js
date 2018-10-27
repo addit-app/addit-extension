@@ -62,12 +62,36 @@ export default class Feed extends React.Component {
     })
   }
 
+  addComment = (content) => {
+    const item = {
+      username: (
+        <div>
+          <UserAvatar
+            src={faker.internet.avatar()}
+            shape='circle'
+            icon='user'
+          />
+          <span>{faker.internet.userName()}</span>
+        </div>
+      ),
+      content,
+    }
+
+    const prevData = this.state.data;
+    this.setState({
+      data: [
+        item,
+        ...prevData,
+      ],
+    })
+  }
+
   render() {
     return (
       <Div
         margin='10px'
       >
-        <QuickEditor />
+        <QuickEditor addComment={this.addComment} />
         <List
           itemLayout='vertical'
           dataSource={this.state.data}
