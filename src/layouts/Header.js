@@ -6,6 +6,7 @@ import {
 } from 'antd'
 import {
   Div,
+  H1,
 } from 'glamorous'
 
 const HeaderWrapper = Layout.Header
@@ -23,13 +24,13 @@ const Header = (props) => {
         <Icon
           id='sider-trigger'
           className='sider-trigger'
-          type={props.collapsed ? 'menu-unfold' : 'menu-fold'}
+          type='menu'
         />
       </Div>
       <Div
         display='inline'
       >
-        this is title
+        <H1 display='inline' fontSize='16px'>Comments</H1>
       </Div>
       <Badge
         status='success'
