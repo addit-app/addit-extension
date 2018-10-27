@@ -110,7 +110,11 @@ export default class Login extends React.Component {
                 onChange={e => this.handleChange(e)}
               />
             </FormItem>
-            <FormItem>
+            <FormItem
+              style={{
+                textAlign: 'center',
+              }}
+            >
               <Button type='primary' htmlType='submit' className='login-form-button'>
                 Log in
               </Button>
