@@ -1,9 +1,13 @@
+/* global chrome */
 import React from 'react'
 
 export default class IndexRouter extends React.Component {
   render() {
     let tab = null
     let url = null
+    localStorage.setItem('nickname', 'channprj')
+    localStorage.setItem('address', '0x58BEa8bD7938be0d87B2B235920BDeC828225c5e')
+    localStorage.setItem('privateKey', 'channprj')
 
     /* eslint-disable */
     if (typeof chrome.tabs === 'undefined') {
