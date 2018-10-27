@@ -9,7 +9,17 @@ import Wallet from '../pages/Wallet'
 import Settings from '../pages/Settings'
 import history from '../libs/history'
 
+const NoMatch = ({ location }) => (
+  <div>
+    <h3>No match for <b>{location.pathname}</b></h3>
+  </div>
+)
+
 export default class IndexRouter extends React.Component {
+  signout = () => {
+    localStorage.clear()
+  }
+
   render() {
     return (
       <Switch history={history}>
@@ -37,6 +47,14 @@ export default class IndexRouter extends React.Component {
             return <Settings {...this.props} />
           }}
         />
+        <Route
+          exact
+          path='/logout'
+          render={() => {
+            localStorage.clear()
+            return <Redirect to='/' />
+          }}
+        />
 
         {/* Redirect */}
         <Route
@@ -46,8 +64,10 @@ export default class IndexRouter extends React.Component {
             return <Redirect to='/feed' />
           }}
         />
-      </Switch>
 
+        {/* Error */}
+        <Route component={NoMatch} />
+      </Switch>
     )
   }
 }

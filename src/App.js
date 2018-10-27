@@ -2,6 +2,8 @@ import React from 'react'
 import {
   HashRouter,
   NavLink,
+  Switch,
+  Route,
 } from 'react-router-dom'
 import {
   Avatar,
@@ -18,9 +20,11 @@ import {
   Div,
 } from 'glamorous'
 import styled from 'styled-components'
+import history from './libs/history'
 import Header from './layouts/Header'
-import './assets/css/layout.less'
 import IndexRouter from './routes/IndexRouter'
+import Login from './pages/Login'
+import './assets/css/layout.less'
 
 const {
   Content,
@@ -66,10 +70,12 @@ const sidebar = (
         // }}
       />
       <UpperDiv style={{ marginTop: '10px' }}>
-        <b>channprj</b>
+        <b>
+          { localStorage.getItem('nickname') || 'Default' }
+        </b>
       </UpperDiv>
       <UpperDiv>
-        1000 KLAY
+        { localStorage.getItem('klay') || 'No data' }
       </UpperDiv>
       <div>
         <Tooltip placement='top' title='Copy address'>
@@ -102,7 +108,7 @@ const sidebar = (
       </Menu.Item>
       <Menu.Item key='/settings'>
         <NavLink to='/settings'>
-          <Icon type='tool' />
+          <Icon type='tool' theme='outlined' />
           <span>Settings</span>
         </NavLink>
       </Menu.Item>
@@ -155,37 +161,44 @@ class App extends React.Component {
   }
 
   render() {
-    localStorage.setItem('nickname', 'channprj')
-    localStorage.setItem('address', '0x58BEa8bD7938be0d87B2B235920BDeC828225c5e')
-    localStorage.setItem('privateKey', 'channprj')
-    return (
-      <HashRouter>
-        <Layout
-          style={{
-            minHeight: '100vh',
-          }}
-        >
-          <Sidebar
-            sidebar={sidebar}
-            open={this.state.open}
-            onSetOpen={this.toggleSidebar}
-            docked={this.state.docked}
-            styles={{
-              sidebar: {
-                background: 'white',
-                width: '220px',
-              },
+    if (localStorage.getItem('address') !== null && localStorage.getItem('privateKey')) {
+      return (
+        <HashRouter>
+          <Layout
+            style={{
+              minHeight: '100vh',
             }}
           >
-            <Header
+            <Sidebar
+              sidebar={sidebar}
               open={this.state.open}
-              toggle={this.toggleSidebar}
-            />
-            <Content>
-              <IndexRouter />
-            </Content>
-          </Sidebar>
-        </Layout>
+              onSetOpen={this.toggleSidebar}
+              docked={this.state.docked}
+              styles={{
+                sidebar: {
+                  background: 'white',
+                  width: '220px',
+                },
+              }}
+            >
+              <Header
+                open={this.state.open}
+                toggle={this.toggleSidebar}
+              />
+              <Content>
+                <IndexRouter />
+              </Content>
+            </Sidebar>
+          </Layout>
+        </HashRouter>
+      )
+    }
+
+    return (
+      <HashRouter>
+        <Switch history={history}>
+          <Route component={Login} />
+        </Switch>
       </HashRouter>
     )
   }
