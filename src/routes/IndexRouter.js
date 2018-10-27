@@ -52,6 +52,7 @@ export default class IndexRouter extends React.Component {
           path='/logout'
           render={() => {
             localStorage.clear()
+            window.location.replace('/')
             return <Redirect to='/' />
           }}
         />
@@ -61,6 +62,7 @@ export default class IndexRouter extends React.Component {
           exact
           path='/'
           render={() => {
+            window.location.reload()
             return <Redirect to='/feed' />
           }}
         />

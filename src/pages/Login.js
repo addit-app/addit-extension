@@ -1,11 +1,91 @@
 import React from 'react'
+import {
+  Button,
+  Form,
+  Icon,
+  Input,
+} from 'antd'
 
-export default class Feed extends React.Component {
+const FormItem = Form.Item
+
+export default class Login extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      address: '',
+      privateKey: '',
+      isLogin: false,
+    }
+  }
+
+  onSubmit = (event) => {
+    event.preventDefault()
+    localStorage.setItem('address', this.state.address)
+    localStorage.setItem('privateKey', this.state.privateKey)
+
+    this.setState({
+      address: '',
+      privateKey: '',
+      isLogin: true,
+    })
+
+    // setTimeout(1000, () => window.location.replace('/'))
+    // setTimeout(1000, () => { window.location.href = '/' })
+    // setTimeout(100, () => this.props.history.push('/'))
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    })
+  }
+
   render() {
+    if (localStorage.getItem('address') !== null && localStorage.getItem('privateKey') !== null && this.state.isLogin === true) {
+      window.location.replace('/')
+    }
+
     return (
-      <div>
-        Login
-      </div>
+      <Form
+        onSubmit={this.onSubmit}
+        onClick={this.handleLogin}
+        style={{
+          width: '280px',
+          margin: '0 auto',
+          marginTop: '44px',
+        }}
+      >
+        <FormItem>
+          <Input
+            id='address'
+            name='address'
+            type='text'
+            value={this.state.address}
+            prefix={<Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />}
+            placeholder='Klaytn Address'
+            onChange={e => this.handleChange(e)}
+          />
+        </FormItem>
+        <FormItem>
+          <Input
+            id='privateKey'
+            name='privateKey'
+            type='password'
+            value={this.state.privateKey}
+            prefix={<Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />}
+            placeholder='Private Key'
+            onChange={e => this.handleChange(e)}
+          />
+        </FormItem>
+        <FormItem>
+          <Button type='primary' htmlType='submit' className='login-form-button'>
+            Log in
+          </Button>
+          <span style={{ marginLeft: '10px' }}>
+            or <a href='https://wallet.klaytn.com' target='_blank' rel='noopener noreferrer'>Create Klaytn Account</a>
+          </span>
+        </FormItem>
+      </Form>
     )
   }
 }

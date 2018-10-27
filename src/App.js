@@ -112,6 +112,12 @@ const sidebar = (
           <span>Settings</span>
         </NavLink>
       </Menu.Item>
+      <Menu.Item key='/logout'>
+        <NavLink to='/logout'>
+          <Icon type='logout' theme='outlined' />
+          <span>Logout</span>
+        </NavLink>
+      </Menu.Item>
     </Menu>
     <BottomBtn>
       <a id='open-newtab' href={window.location.href} target='_blank' rel='noopener noreferrer'>
@@ -161,7 +167,7 @@ class App extends React.Component {
   }
 
   render() {
-    if (localStorage.getItem('address') !== null && localStorage.getItem('privateKey')) {
+    if (localStorage.getItem('address') !== null && localStorage.getItem('privateKey') !== null) {
       return (
         <HashRouter>
           <Layout
