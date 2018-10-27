@@ -5,12 +5,19 @@ import {
   Icon,
   Input,
 } from 'antd'
+import {
+  Div,
+  H1,
+  Img,
+} from 'glamorous'
+import AppIcon from '../assets/img/app-icon.png'
 
 const FormItem = Form.Item
 
 export default class Login extends React.Component {
   constructor() {
     super()
+
     this.state = {
       address: '',
       privateKey: '',
@@ -46,46 +53,74 @@ export default class Login extends React.Component {
     }
 
     return (
-      <Form
-        onSubmit={this.onSubmit}
-        onClick={this.handleLogin}
-        style={{
-          width: '280px',
-          margin: '0 auto',
-          marginTop: '44px',
-        }}
+      <Div
+        display='flex'
+        flexDirection='column'
+        justifyContent='center'
+        alignItems='center'
+        height='100vh'
       >
-        <FormItem>
-          <Input
-            id='address'
-            name='address'
-            type='text'
-            value={this.state.address}
-            prefix={<Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder='Klaytn Address'
-            onChange={e => this.handleChange(e)}
+        <Div
+          width='100%'
+          display='flex'
+          align-items='center'
+          flex-direction='column'
+        >
+          <Img
+            src={AppIcon}
+            alt='Addit App Icon'
+            width='52px'
+            height='52px'
           />
-        </FormItem>
-        <FormItem>
-          <Input
-            id='privateKey'
-            name='privateKey'
-            type='password'
-            value={this.state.privateKey}
-            prefix={<Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder='Private Key'
-            onChange={e => this.handleChange(e)}
-          />
-        </FormItem>
-        <FormItem>
-          <Button type='primary' htmlType='submit' className='login-form-button'>
-            Log in
-          </Button>
-          <span style={{ marginLeft: '10px' }}>
-            or <a href='https://wallet.klaytn.com' target='_blank' rel='noopener noreferrer'>Create Klaytn Account</a>
-          </span>
-        </FormItem>
-      </Form>
+          <H1
+            marginTop='10px'
+          >
+            Addit
+          </H1>
+        </Div>
+        <Div>
+          <Form
+            onSubmit={this.onSubmit}
+            // onClick={this.handleLogin}
+            style={{
+              width: '280px',
+              margin: '0 auto',
+              marginTop: '40px',
+            }}
+          >
+            <FormItem>
+              <Input
+                id='address'
+                name='address'
+                type='text'
+                value={this.state.address}
+                prefix={<Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />}
+                placeholder='Klaytn Address'
+                onChange={e => this.handleChange(e)}
+              />
+            </FormItem>
+            <FormItem>
+              <Input
+                id='privateKey'
+                name='privateKey'
+                type='password'
+                value={this.state.privateKey}
+                prefix={<Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />}
+                placeholder='Private Key'
+                onChange={e => this.handleChange(e)}
+              />
+            </FormItem>
+            <FormItem>
+              <Button type='primary' htmlType='submit' className='login-form-button'>
+                Log in
+              </Button>
+              <span style={{ marginLeft: '10px' }}>
+                or <a href='https://wallet.klaytn.com' target='_blank' rel='noopener noreferrer'>Create Klaytn Account</a>
+              </span>
+            </FormItem>
+          </Form>
+        </Div>
+      </Div>
     )
   }
 }

@@ -4,8 +4,6 @@ import {
   Form,
   Input,
   List,
-  Icon,
-  Avatar,
   Button,
 } from 'antd';
 import {
@@ -16,12 +14,6 @@ import faker from 'faker'
 import styled from 'styled-components'
 
 const FormItem = Form.Item;
-const IconText = ({ type, text }) => (
-  <span>
-    <Icon type={type} style={{ marginRight: 8 }} />
-    {text}
-  </span>
-)
 
 const UpperDiv = styled(Div)`
   margin-bottom: 1rem;

@@ -5,12 +5,27 @@ import {
 } from 'antd'
 import {
   Div,
+  P,
   Span,
 } from 'glamorous'
 
 const { TextArea } = Input
 
 export default class QuickEditor extends React.Component {
+  constructor() {
+    super()
+
+    this.state = {
+      content: '',
+    }
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    })
+  }
+
   render() {
     return (
       <Div
@@ -22,15 +37,20 @@ export default class QuickEditor extends React.Component {
         >
           URL
         </Span>
-        <Span
-          maxWidth='400px'
+        <P
+          maxWidth='300px'
           whiteSpace='nowrap'
           overflow='hidden'
           textOverflow='ellipsis'
         >
           {localStorage.getItem('url')}
-        </Span>
-        <TextArea rows={4} />
+        </P>
+        <TextArea
+          value={this.state.content}
+          rows={3}
+          autosize={false}
+          onChange={e => this.handleChange(e)}
+        />
         <Button
           type='primary'
           style={{

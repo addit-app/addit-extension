@@ -29,13 +29,17 @@ export default class Feed extends React.Component {
   constructor() {
     super()
 
+    this.state = {
+      data: [],
+    }
+
     getCurrentTabURL()
   }
 
-  render() {
+  componentDidMount() {
     const data = []
 
-    for (let index = 1; index <= 20; index++) {
+    for (let index = 1; index <= 15; index++) {
       const item = {
         username: (
           <div>
@@ -53,6 +57,12 @@ export default class Feed extends React.Component {
       data.push(item)
     }
 
+    this.setState({
+      data,
+    })
+  }
+
+  render() {
     return (
       <Div
         margin='10px'
@@ -60,7 +70,7 @@ export default class Feed extends React.Component {
         <QuickEditor />
         <List
           itemLayout='vertical'
-          dataSource={data}
+          dataSource={this.state.data}
           renderItem={item => (
             <List.Item
               actions={[
