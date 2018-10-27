@@ -52,7 +52,15 @@ const sidebar = (
       textAlign='center'
       padding='20px'
     >
-      <Avatar shape='square' size={64} icon='user' />
+      <Avatar
+        shape='square'
+        size={64}
+        icon='user'
+        // style={{
+        //   color: '#faad14', // gold-2
+        //   background: '#fff1b8', // gold-6
+        // }}
+      />
       <UpperDiv style={{ marginTop: '10px' }}>
         <b>channprj</b>
       </UpperDiv>
@@ -87,7 +95,7 @@ const sidebar = (
       </Menu.Item>
     </Menu>
     <BottomBtn>
-      <a href={window.location.href} target='_blank' rel='noopener noreferrer'>
+      <a id='open-newtab' href={window.location.href} target='_blank' rel='noopener noreferrer'>
         <TitleIcon type='export' theme='outlined' />
         <span>Open in a new tab</span>
       </a>

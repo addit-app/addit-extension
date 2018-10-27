@@ -8,12 +8,18 @@
     "default_popup": "index.html",
     "default_title": "Addit Extension"
   },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "all_frames": true,
+    "js":      ["scripts/content.js"]
+  }],
   "icons": {
     "16": "app-icon.png",
     "48": "app-icon.png",
     "128": "app-icon.png"
   },
   "permissions": [
-    "storage"
+    "storage",
+    "activeTab"
   ]
 }
