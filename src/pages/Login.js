@@ -42,7 +42,7 @@ export default class Login extends React.Component {
 
   render() {
     if (localStorage.getItem('address') !== null && localStorage.getItem('privateKey') !== null && this.state.isLogin === true) {
-      window.location.replace('/')
+      window.location.replace('/index.html')
     }
 
     return (
