@@ -27,7 +27,6 @@ export default class IndexRouter extends React.Component {
           exact
           path='/feed'
           render={() => {
-            // this.props.setTitle('Dashboard')
             return <Feed {...this.props} />
           }}
         />
@@ -35,7 +34,6 @@ export default class IndexRouter extends React.Component {
           exact
           path='/wallet'
           render={() => {
-            // this.props.setTitle('Dashboard')
             return <Wallet {...this.props} />
           }}
         />
@@ -43,7 +41,6 @@ export default class IndexRouter extends React.Component {
           exact
           path='/settings'
           render={() => {
-            // this.props.setTitle('Dashboard')
             return <Settings {...this.props} />
           }}
         />

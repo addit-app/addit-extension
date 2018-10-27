@@ -30,7 +30,7 @@ const Header = (props) => {
       <Div
         display='inline'
       >
-        <H1 display='inline' fontSize='16px'>Comments</H1>
+        <H1 display='inline' fontSize='16px'>Addit</H1>
       </Div>
       <Badge
         status='success'

@@ -5,7 +5,9 @@
   "dependencies": {
     "antd": "^3.10.2",
     "babel-plugin-import": "^1.10.0",
+    "caver-js": "^0.0.1-c",
     "eslint-config-airbnb": "^17.1.0",
+    "faker": "^4.1.0",
     "glamor": "^2.20.40",
     "glamorous": "^4.13.1",
     "history": "^4.7.2",
@@ -19,7 +21,8 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.0.5",
     "react-sidebar": "^3.0.2",
-    "styled-components": "^4.0.2"
+    "styled-components": "^4.0.2",
+    "web3": "^1.0.0-beta.36"
   },
   "scripts": {
     "start": "react-app-rewired start",

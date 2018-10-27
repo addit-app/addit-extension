@@ -20,6 +20,7 @@ import {
   Div,
 } from 'glamorous'
 import styled from 'styled-components'
+import faker from 'faker'
 import history from './libs/history'
 import Header from './layouts/Header'
 import IndexRouter from './routes/IndexRouter'
@@ -61,7 +62,8 @@ const sidebar = (
       padding='20px'
     >
       <Avatar
-        shape='square'
+        src={faker.internet.avatar()}
+        shape='circle'
         size={64}
         icon='user'
         // style={{
@@ -71,11 +73,11 @@ const sidebar = (
       />
       <UpperDiv style={{ marginTop: '10px' }}>
         <b>
-          { localStorage.getItem('nickname') || 'Default' }
+          { localStorage.getItem('nickname') || faker.internet.userName() }
         </b>
       </UpperDiv>
       <UpperDiv>
-        { localStorage.getItem('klay') || 'No data' }
+        { localStorage.getItem('klay') || '1000 KLAY' }
       </UpperDiv>
       <div>
         <Tooltip placement='top' title='Copy address'>
@@ -106,7 +108,7 @@ const sidebar = (
           <span>Wallet</span>
         </NavLink>
       </Menu.Item>
-      <Menu.Item key='/settings'>
+      <Menu.Item key='/settings' disabled>
         <NavLink to='/settings'>
           <Icon type='tool' theme='outlined' />
           <span>Settings</span>
