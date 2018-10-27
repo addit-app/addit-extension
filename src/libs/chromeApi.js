@@ -10,6 +10,7 @@ export function getCurrentTabURL() {
     }, (tabs) => {
       localStorage.setItem('url', tabs[0].url)
       localStorage.setItem('tabs', JSON.stringify(tabs))
+
       return tabs[0].url
     })
   } catch (error) {
