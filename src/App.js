@@ -1,11 +1,15 @@
 import React from 'react'
 import {
+  HashRouter,
+  NavLink,
+} from 'react-router-dom'
+import {
   Avatar,
   Icon,
   Layout,
   Menu,
   message,
-  Tag,
+  // Tag,
   Tooltip,
 } from 'antd'
 import Sidebar from 'react-sidebar'
@@ -35,12 +39,12 @@ const BottomBtn = styled.div`
 }
 `
 
-const EllipsisTag = styled(Tag)`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: fit-content;
-  max-width: 160px;
-`
+// const EllipsisTag = styled(Tag)`
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+//   width: fit-content;
+//   max-width: 160px;
+// `
 
 const TitleIcon = styled(Icon)`
   margin-right: 10px;
@@ -75,23 +79,32 @@ const sidebar = (
             data-clipboard-text='0x58BEa8bD7938be0d87B2B235920BDeC828225c5e'
             onSuccess={() => message.success('Copied!', 1.5)}
           >
-            <EllipsisTag>0x58BEa8bD7938be0d87B2B235920BDeC828225c5e</EllipsisTag>
+            {/* <EllipsisTag>0x58BEa8bD7938be0d87B2B235920BDeC828225c5e</EllipsisTag> */}
           </Clipboard>
         </Tooltip>
       </div>
     </Div>
-    <Menu mode='inline' defaultSelectedKeys={['1']}>
-      <Menu.Item key='1'>
-        <Icon type='message' theme='outlined' />
-        <span>Comments</span>
+    <Menu
+      mode='inline'
+      defaultSelectedKeys={[window.location.href.split('#')[1]]}
+    >
+      <Menu.Item key='/feed'>
+        <NavLink to='/feed'>
+          <Icon type='message' theme='outlined' />
+          <span>Comments</span>
+        </NavLink>
       </Menu.Item>
-      <Menu.Item key='2'>
-        <Icon type='wallet' theme='outlined' />
-        <span>Wallet</span>
+      <Menu.Item key='/wallet'>
+        <NavLink to='/wallet'>
+          <Icon type='wallet' theme='outlined' />
+          <span>Wallet</span>
+        </NavLink>
       </Menu.Item>
-      <Menu.Item key='3'>
-        <Icon type='tool' />
-        <span>Settings</span>
+      <Menu.Item key='/settings'>
+        <NavLink to='/settings'>
+          <Icon type='tool' />
+          <span>Settings</span>
+        </NavLink>
       </Menu.Item>
     </Menu>
     <BottomBtn>
@@ -142,33 +155,38 @@ class App extends React.Component {
   }
 
   render() {
+    localStorage.setItem('nickname', 'channprj')
+    localStorage.setItem('address', '0x58BEa8bD7938be0d87B2B235920BDeC828225c5e')
+    localStorage.setItem('privateKey', 'channprj')
     return (
-      <Layout
-        style={{
-          minHeight: '100vh',
-        }}
-      >
-        <Sidebar
-          sidebar={sidebar}
-          open={this.state.open}
-          onSetOpen={this.toggleSidebar}
-          docked={this.state.docked}
-          styles={{
-            sidebar: {
-              background: 'white',
-              width: '220px',
-            },
+      <HashRouter>
+        <Layout
+          style={{
+            minHeight: '100vh',
           }}
         >
-          <Header
+          <Sidebar
+            sidebar={sidebar}
             open={this.state.open}
-            toggle={this.toggleSidebar}
-          />
-          <Content>
-            <IndexRouter />
-          </Content>
-        </Sidebar>
-      </Layout>
+            onSetOpen={this.toggleSidebar}
+            docked={this.state.docked}
+            styles={{
+              sidebar: {
+                background: 'white',
+                width: '220px',
+              },
+            }}
+          >
+            <Header
+              open={this.state.open}
+              toggle={this.toggleSidebar}
+            />
+            <Content>
+              <IndexRouter />
+            </Content>
+          </Sidebar>
+        </Layout>
+      </HashRouter>
     )
   }
 }

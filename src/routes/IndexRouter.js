@@ -1,34 +1,53 @@
-/* global chrome */
 import React from 'react'
+import {
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom'
+import Feed from '../pages/Feed'
+import Wallet from '../pages/Wallet'
+import Settings from '../pages/Settings'
+import history from '../libs/history'
 
 export default class IndexRouter extends React.Component {
   render() {
-    let tab = 'not set'
-    let url = 'not set'
-    localStorage.setItem('nickname', 'channprj')
-    localStorage.setItem('address', '0x58BEa8bD7938be0d87B2B235920BDeC828225c5e')
-    localStorage.setItem('privateKey', 'channprj')
-
-    /* eslint-disable */
-    if (typeof chrome.tabs === 'undefined') {
-      console.log('the property is not available...');
-    } else {
-      chrome.tabs.query({
-        active: true,
-        currentWindow: true,
-      }, (tabs) => {
-        tab = tabs[0]
-        url = tabs.url
-      })
-    }
-    /* eslint-enable */
-
     return (
-      <div>
-        IndexRouter
-        <div>tab: {tab}</div>
-        <div>url: {url}</div>
-      </div>
+      <Switch history={history}>
+        <Route
+          exact
+          path='/feed'
+          render={() => {
+            // this.props.setTitle('Dashboard')
+            return <Feed {...this.props} />
+          }}
+        />
+        <Route
+          exact
+          path='/wallet'
+          render={() => {
+            // this.props.setTitle('Dashboard')
+            return <Wallet {...this.props} />
+          }}
+        />
+        <Route
+          exact
+          path='/settings'
+          render={() => {
+            // this.props.setTitle('Dashboard')
+            return <Settings {...this.props} />
+          }}
+        />
+
+        {/* Redirect */}
+        <Route
+          exact
+          path='/'
+          render={() => {
+            return <Redirect to='/feed' />
+          }}
+        />
+      </Switch>
+
     )
   }
 }
