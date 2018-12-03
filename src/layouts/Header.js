@@ -1,20 +1,40 @@
 import React from 'react'
 import {
+  // inject,
+  observer,
+} from 'mobx-react'
+import {
   Badge,
   Icon,
   Layout,
 } from 'antd'
-import {
-  Div,
-  H1,
-} from 'glamorous'
+import styled from 'styled-components'
+import Log from '../utils/debugLog'
+
+const HeaderDiv = styled.div`
+  /* width: 44px; */
+  /* height: 44px; */
+  padding: 16px;
+  display: inline;
+`
 
 const HeaderWrapper = Layout.Header
 
-const Header = (props) => {
+const status = {
+  'online': 'success',
+  'offline': 'error',
+  'warning': 'warning',
+  'processing': 'processing',
+  'unset': 'default',
+}
+
+// const Header = inject('accountStore')(observer((props) => {
+const Header = observer((props) => {
+  Log.info('Header::accountStore', props.accountStore)
+
   return (
     <HeaderWrapper style={{ background: '#fff', padding: 0 }}>
-      <Div
+      <HeaderDiv
         padding='16px'
         width='44px'
         height='44px'
@@ -26,15 +46,16 @@ const Header = (props) => {
           className='sider-trigger'
           type='menu'
         />
-      </Div>
-      <Div
+      </HeaderDiv>
+      <HeaderDiv
         display='inline'
       >
-        <H1 display='inline' fontSize='16px'>Addit</H1>
-      </Div>
+        {/* <H1 display='inline' fontSize='16px'>OWDIN Wallet</H1> */}
+      </HeaderDiv>
       <Badge
-        status='success'
-        text='Aspen Network'
+        status={status.online}
+        // text={props.network}
+        text='JungleNet'
         style={{
           float: 'right',
           padding: '0 20px',
@@ -42,6 +63,6 @@ const Header = (props) => {
       />
     </HeaderWrapper>
   )
-}
+})
 
 export default Header

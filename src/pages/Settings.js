@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class Feed extends React.Component {
+class Settings extends React.Component {
   render() {
     return (
       <div>
@@ -9,3 +9,5 @@ export default class Feed extends React.Component {
     )
   }
 }
+
+export default Settings

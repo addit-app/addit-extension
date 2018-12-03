@@ -4,22 +4,23 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom'
+import {
+  Div,
+} from 'glamorous'
+import history from '../utils/history'
 import Feed from '../pages/Feed'
 import Wallet from '../pages/Wallet'
 import Settings from '../pages/Settings'
-import history from '../libs/history'
 
-const NoMatch = ({ location }) => (
-  <div>
-    <h3>No match for <b>{location.pathname}</b></h3>
-  </div>
+const Error404 = ({ location }) => (
+  <Div
+    margin='20px'
+  >
+    <h3>Page does not exist. <b>{location.pathname}</b></h3>
+  </Div>
 )
 
-export default class IndexRouter extends React.Component {
-  signout = () => {
-    localStorage.clear()
-  }
-
+class RootRouter extends React.Component {
   render() {
     return (
       <Switch history={history}>
@@ -48,8 +49,11 @@ export default class IndexRouter extends React.Component {
           exact
           path='/logout'
           render={() => {
-            localStorage.clear()
-            window.location.replace('/')
+            // setStatus('locked')
+            setTimeout(() => {
+              window.location.replace('/index.html')
+            }, 100)
+            // window.location.reload()
             return <Redirect to='/' />
           }}
         />
@@ -59,14 +63,16 @@ export default class IndexRouter extends React.Component {
           exact
           path='/'
           render={() => {
-            window.location.reload()
+            // window.location.reload()
             return <Redirect to='/feed' />
           }}
         />
 
         {/* Error */}
-        <Route component={NoMatch} />
+        <Route component={Error404} />
       </Switch>
     )
   }
 }
+
+export default RootRouter
