@@ -1,6 +1,6 @@
 {
-  "name": "owdin-extension",
-  "description": "Browser extension for OWDIN Port",
+  "name": "addit-extension",
+  "description": "Browser extension for Addit",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
