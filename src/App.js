@@ -1,13 +1,8 @@
 import React from 'react'
 import {
-  HashRouter,
   Switch,
   Route,
 } from 'react-router-dom'
-import {
-  Provider,
-  observer,
-} from 'mobx-react'
 import {
   Layout,
 } from 'antd'
@@ -28,12 +23,9 @@ const {
 
 const mql = window.matchMedia('(min-width: 576px)')
 
-@observer
 class App extends React.Component {
   constructor() {
     super()
-
-    // getAccountList(accountStore)
 
     this.state = {
       open: false,
@@ -102,64 +94,52 @@ class App extends React.Component {
       case 'online':
       case 'offline':
         return (
-          // <Provider accountStore={accountStore}>
-          <Provider>
-            <HashRouter>
-              <Layout
-                style={{
-                  minHeight: '100vh',
-                }}
-              >
-                <Sidebar
-                  sidebar={(
-                    <SidebarMenu
-                      closeSidebar={this.closeSidebar}
-                    />
-                  )}
-                  open={this.state.open}
-                  onSetOpen={this.toggleSidebar}
-                  docked={this.state.docked}
-                  styles={{
-                    sidebar: {
-                      background: 'white',
-                      width: '220px',
-                    },
-                  }}
-                >
-                  <Header
-                    open={this.state.open}
-                    toggle={this.toggleSidebar}
-                  />
-                  <Content>
-                    <RootRouter />
-                  </Content>
-                  <Footer />
-                </Sidebar>
-              </Layout>
-            </HashRouter>
-          </Provider>
+          <Layout
+            style={{
+              minHeight: '100vh',
+            }}
+          >
+            <Sidebar
+              sidebar={(
+                <SidebarMenu
+                  closeSidebar={this.closeSidebar}
+                />
+              )}
+              open={this.state.open}
+              onSetOpen={this.toggleSidebar}
+              docked={this.state.docked}
+              styles={{
+                sidebar: {
+                  background: 'white',
+                  width: '220px',
+                },
+              }}
+            >
+              <Header
+                open={this.state.open}
+                toggle={this.toggleSidebar}
+              />
+              <Content>
+                <RootRouter />
+              </Content>
+              <Footer />
+            </Sidebar>
+          </Layout>
         )
       case 'locked':
         return (
-          // <Provider accountStore={accountStore}>
-          <Provider>
-            <HashRouter>
-              <Switch history={history}>
-                <Route render={() => <Login />} />
-              </Switch>
-            </HashRouter>
-          </Provider>
+          <Switch history={history}>
+            <Route render={() => <Login />} />
+          </Switch>
         )
       default:
         break;
     }
 
     return (
-      <HashRouter>
-        <Switch history={history}>
-          <Route component={Setup} />
-        </Switch>
-      </HashRouter>
+      <Switch history={history}>
+        <Route component={Setup} />
+      </Switch>
     )
   }
 }
