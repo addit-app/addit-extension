@@ -12,8 +12,6 @@ import styled from 'styled-components'
 import Log from '../utils/debugLog'
 
 const HeaderDiv = styled.div`
-  /* width: 44px; */
-  /* height: 44px; */
   padding: 16px;
   display: inline;
 `
@@ -61,8 +59,7 @@ const Header = inject('settingStore')(observer((props) => {
       </HeaderDiv>
       <Badge
         status={status[props.settingStore.status]}
-        // text={props.network}
-        text='JungleNet'
+        text={props.settingStore.currentNetwork}
         style={{
           float: 'right',
           padding: '0 20px',

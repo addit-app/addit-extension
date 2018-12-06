@@ -56,12 +56,10 @@ const TitleIcon = styled(Icon)`
 margin-right: 10px;
 `
 
-@inject('settingStore')
+@inject('settingStore', 'accountStore')
 @observer
 class SidebarMenu extends React.Component {
   @observable selectedMenu = window.location.href.split('#')[1]
-
-  account = 'eosadditapps'
 
   constructor(props) {
     super(props)
@@ -75,13 +73,18 @@ class SidebarMenu extends React.Component {
     Log.info('Sidebar::getDerivedStateFromProps()', { nextProps, prevState })
 
     if (nextProps) {
-      nextProps.settingStore.updateCurrentMenu(window.location.href.split('#')[1])
+      if (window.location.href.split('#')[1] === '/') {
+        nextProps.settingStore.updateCurrentMenu('/feed')
+      } else {
+        nextProps.settingStore.updateCurrentMenu(window.location.href.split('#')[1])
+      }
     }
+
+    return null
   }
 
   render() {
-    Log.info('Sidebar', 'render()')
-    Log.info('Sidebar::selectedMenu', this.selectedMenu)
+    Log.info('Sidebar::render()', JSON.stringify(this.props))
 
     return (
       <Div>
@@ -90,13 +93,13 @@ class SidebarMenu extends React.Component {
           padding='20px'
         >
           <Avatar
-            src={`https://avatars.dicebear.com/v2/identicon/${this.account}.svg`}
+            src={`https://avatars.dicebear.com/v2/identicon/${this.props.accountStore.account}.svg`}
             shape='circle'
             size={52}
             icon='user'
           />
           <UpperDiv style={{ marginTop: '10px' }}>
-            <b>{this.account}</b>
+            <b>{this.props.accountStore.account}</b>
           </UpperDiv>
           {/* <UpperDiv>
             {accountBalance}
@@ -156,12 +159,17 @@ class SidebarMenu extends React.Component {
           </Menu.Item>
           <LogoutMenuItem
             key='/logout'
-            onClick={(item) => {
-              this.selectedMenu = item.key
+            onClick={() => {
               this.props.closeSidebar()
             }}
           >
-            <LogoutNavLink to='/logout'>
+            <LogoutNavLink
+              to='/logout'
+              onClick={() => {
+                this.props.settingStore.setStatus('locked')
+                this.props.settingStore.updateCurrentMenu('/feed')
+              }}
+            >
               <Icon type='logout' theme='outlined' />
               <span>Logout</span>
             </LogoutNavLink>

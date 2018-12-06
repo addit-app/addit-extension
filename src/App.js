@@ -6,10 +6,13 @@ import {
 import {
   inject,
   observer,
-} from 'mobx-react';
+} from 'mobx-react'
 import {
   Layout,
 } from 'antd'
+// import {
+//   getStatus,
+// } from '../utils/chromeApi'
 import Sidebar from 'react-sidebar'
 import history from './utils/history'
 import Log from './utils/debugLog'
@@ -39,7 +42,17 @@ class App extends React.Component {
     }
   }
 
-  async componentDidMount() {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    Log.info('App::getDerivedStateFromProps()', { nextProps, prevState })
+
+    if (nextProps) {
+      nextProps.settingStore.getStatusFromBrowser(nextProps.settingStore)
+    }
+
+    return null
+  }
+
+  componentDidMount() {
     window.addEventListener('resize', this.resize.bind(this))
     this.resize()
   }
@@ -92,10 +105,9 @@ class App extends React.Component {
   }
 
   render() {
-    Log.info('App', 'render()')
-    const status = 'online'
+    Log.info('App::render()', JSON.stringify(this.props))
 
-    switch (status) {
+    switch (this.props.settingStore.status || localStorage.getItem('status')) {
       case 'online':
       case 'offline':
         return (

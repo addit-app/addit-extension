@@ -2,8 +2,6 @@
 /**
  * Chrome API Wrapper
  */
-// accountStore create new object occasionally
-// import { accountStore } from '../stores/AccountStore'
 import Log from './debugLog'
 
 export const sample = {
@@ -24,76 +22,52 @@ export const sample = {
   status: 'online', // online, offline, locked, unset
 }
 
-export function version() {
-  try {
-    /* eslint-disable */
-    chrome.storage.local.set({
-      version: '0.0.1',
-      debug: true,
-    });
-    /* eslint-enable */
-  } catch (error) {
-    localStorage.setItem('version', '0.0.1')
-    localStorage.setItem('debug', true)
-  }
-}
-
 export function isExtension() {
   try {
     if (typeof chrome.storage === 'object') {
       return true
     }
-  } catch (error) {
-    Log.error(error)
+  } catch (err) {
+    Log.error('chromeApi::isExtension()', err)
   }
 
   return false
 }
 
-// export function getStatus(accountStore = null) {
-//   try {
-//     if (isExtension()) {
-//       /* eslint-disable */
-//       chrome.storage.local.get('status', item => {
-//         if (accountStore) {
-//           if (item.status !== accountStore.status && JSON.stringify(item) !== '{}') {
-//             accountStore.setStatus(item.status)
-//           }
-//         }
-//       })
-//       /* eslint-enable */
-//     } else {
-//       return localStorage.getItem('status') || 'unset'
-//     }
-//   } catch (error) {
-//     throw error
-//   }
+/**
+ * TODO: Wrapping up for Multiple Browser Storage
+ * Get browser storage data
+ */
+// async function _getStorageValue(item = null) {
+//   const local = chrome.storage.local
 
-//   // for test
-//   return accountStore.status
+//   local.get([item], (result) => {
+//     _storageData = result[item]
+//   })
+//   await _storageData
+
+//   return _storageData
 // }
 
-export function setStatus(status, accountStore = null) {
-  if (accountStore !== null) {
-    accountStore.setStatus(status)
-  }
-
+export function getStatus(storeObj = null) {
   try {
     if (isExtension()) {
       /* eslint-disable */
-      chrome.storage.local.set({
-        status,
+      chrome.storage.local.get('status', item => {
+        if (storeObj) {
+          if (item.status !== storeObj.status && JSON.stringify(item) !== '{}') {
+            storeObj.setStatus(item.status)
+            localStorage.setItem('status', item.status)
+          }
+        }
       })
       /* eslint-enable */
+    } else {
+      storeObj.setStatus(localStorage.getItem('status'))
     }
-    // for test
-    localStorage.setItem('status', status)
-  } catch (error) {
-    throw error
+  } catch (err) {
+    Log.error('chromeApi::getStatus()', err)
   }
-
-  Log.info('chromeApi::accountStore.setStatus()', status)
-  Log.info('chromeApi::accountStore', accountStore)
 }
 
 export function setPassword(password) {
@@ -112,25 +86,26 @@ export function setPassword(password) {
       }
       localStorage.setItem('authenticate', JSON.stringify(passwordObj))
     }
-  } catch (error) {
-    throw error
+  } catch (err) {
+    Log.error('chromeApi::setPassword()', err)
   }
 }
 
-/**
- * TODO: Wrapping up for Multiple Browser Storage
- * Get browser storage data
- */
-// async function _getStorageValue(item = null) {
-//   const local = chrome.storage.local
+export function setStatus(status) {
+  localStorage.setItem('status', status)
 
-//   local.get([item], (result) => {
-//     _storageData = result[item]
-//   })
-//   await _storageData
-
-//   return _storageData
-// }
+  try {
+    if (isExtension()) {
+      /* eslint-disable */
+      chrome.storage.local.set({
+        status,
+      })
+      /* eslint-enable */
+    }
+  } catch (err) {
+    Log.error('chromeApi::setStatus()', err)
+  }
+}
 
 /**
  * Set account and private keys
@@ -157,29 +132,12 @@ export function setKeyPairs(accountName, privateKeys) {
         keyPairs: pairs,
       })
       /* eslint-enable */
-    } catch (error) {
-      Log.error(error)
+    } catch (err) {
+      Log.error('chromeApi::setKeyPairs()', err)
     }
   } else {
     localStorage.setItem('keyPairs', JSON.stringify({ [accountName]: privateKeys }))
   }
-}
-
-// export function isLoggedIn(accountStore) {
-//   if (['online', 'offline'].includes(getStatus(accountStore))) {
-//     return true
-//   }
-
-//   return false
-// }
-
-export function isLoggedIn() {
-  return true
-}
-
-export function isTabExist() {
-  // wip
-  return true
 }
 
 export function newWindow() {
@@ -192,8 +150,8 @@ export function resetExtension() {
       /* eslint-disable */
       chrome.storage.local.clear()
       /* eslint-enable */
-    } catch (error) {
-      Log.error(error)
+    } catch (err) {
+      Log.error('chromeApi::resetExtension()', err)
     }
   }
 
@@ -201,4 +159,4 @@ export function resetExtension() {
   sessionStorage.clear()
 }
 
-export default version
+export default isExtension

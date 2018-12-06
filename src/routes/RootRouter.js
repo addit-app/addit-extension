@@ -5,6 +5,10 @@ import {
   Redirect,
 } from 'react-router-dom'
 import {
+  inject,
+  observer,
+} from 'mobx-react'
+import {
   Div,
 } from 'glamorous'
 import history from '../utils/history'
@@ -20,6 +24,8 @@ const Error404 = ({ location }) => (
   </Div>
 )
 
+@inject('settingStore')
+@observer
 class RootRouter extends React.Component {
   render() {
     return (
@@ -49,11 +55,6 @@ class RootRouter extends React.Component {
           exact
           path='/logout'
           render={() => {
-            // setStatus('locked')
-            setTimeout(() => {
-              window.location.replace('/index.html')
-            }, 100)
-            // window.location.reload()
             return <Redirect to='/' />
           }}
         />

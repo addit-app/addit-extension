@@ -5,7 +5,7 @@ import {
 import Log from '../utils/debugLog'
 
 class AccountStore {
-  @observable currentAccount = 'channproject'
+  @observable account = 'channproject'
 
   @observable nickname = 'CHANN'
 
@@ -17,17 +17,19 @@ class AccountStore {
 
   @observable updating = false
 
-  @action createAccount() {
-    this.loading = false
-    Log.error('accountStore::createAccount()', 'Create user cannot support')
-    return false
+  @action setAccount(account) {
+    try {
+      this.account = account
+    } catch (error) {
+      Log.error('accountStore::createAccount()', error)
+    }
   }
 
   @action readAccount() {
     this.loading = true
     return this.api.auth.current()
       .then(action(({ resp }) => {
-        this.currentAccount = resp
+        this.account = resp
       }))
       .catch((err) => {
         Log.error('accountStore::readAccount()', err)
@@ -41,7 +43,7 @@ class AccountStore {
     this.updating = true
     return this.api.auth.save(account)
       .then(action(({ resp }) => {
-        this.currentAccount = resp
+        this.account = resp
       }))
       .catch((err) => {
         Log.error('accountStore::updateAccount()', err)
@@ -52,7 +54,7 @@ class AccountStore {
   }
 
   @action deleteAccount() {
-    this.currentAccount = undefined
+    this.account = undefined
   }
 }
 

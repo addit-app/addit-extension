@@ -1,9 +1,13 @@
 import {
   action,
   observable,
+  // runInAction,
+  // spy,
 } from 'mobx'
 import {
   setPassword as extensionSetPassword,
+  setStatus as extensionSetStatus,
+  getStatus as extensionGetStatus,
 } from '../utils/chromeApi'
 import Log from '../utils/debugLog'
 
@@ -16,9 +20,11 @@ class SettingStore {
 
   @observable currentMenu = '/'
 
-  @observable title = '/'
+  @observable currentNetwork = 'Offline'
 
-  @observable status = 'online'
+  @observable title = 'Addit'
+
+  @observable status = null
 
   @observable endpoints = [
     {
@@ -77,6 +83,21 @@ class SettingStore {
   @action getPassword() {
     this.password = ''
   }
+
+  @action setStatus(status) {
+    extensionSetStatus(status)
+    this.status = status
+  }
+
+  @action getStatusFromBrowser(storeObj) {
+    extensionGetStatus(storeObj)
+  }
 }
+
+// spy((event) => {
+//   if (event.type === 'action') {
+//     Log.info('MobX::settingStore::action', `${event.name} with args: ${event.arguments}`)
+//   }
+// })
 
 export default new SettingStore()
