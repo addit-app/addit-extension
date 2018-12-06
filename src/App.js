@@ -4,6 +4,10 @@ import {
   Route,
 } from 'react-router-dom'
 import {
+  inject,
+  observer,
+} from 'mobx-react';
+import {
   Layout,
 } from 'antd'
 import Sidebar from 'react-sidebar'
@@ -23,6 +27,8 @@ const {
 
 const mql = window.matchMedia('(min-width: 576px)')
 
+@inject('accountStore', 'settingStore')
+@observer
 class App extends React.Component {
   constructor() {
     super()
@@ -87,7 +93,6 @@ class App extends React.Component {
 
   render() {
     Log.info('App', 'render()')
-    // const status = getStatus(accountStore)
     const status = 'online'
 
     switch (status) {

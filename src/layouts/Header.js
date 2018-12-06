@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  // inject,
+  inject,
   observer,
 } from 'mobx-react'
 import {
@@ -17,6 +17,14 @@ const HeaderDiv = styled.div`
   padding: 16px;
   display: inline;
 `
+const H1 = styled.h1`
+  display: inline;
+  font-size: 16px;
+
+  &:first-letter {
+    text-transform: capitalize;
+  }
+`
 
 const HeaderWrapper = Layout.Header
 
@@ -28,9 +36,8 @@ const status = {
   'unset': 'default',
 }
 
-// const Header = inject('accountStore')(observer((props) => {
-const Header = observer((props) => {
-  Log.info('Header::accountStore', props.accountStore)
+const Header = inject('settingStore')(observer((props) => {
+  Log.info('Header::settingStore', props.settingStore)
 
   return (
     <HeaderWrapper style={{ background: '#fff', padding: 0 }}>
@@ -50,10 +57,10 @@ const Header = observer((props) => {
       <HeaderDiv
         display='inline'
       >
-        {/* <H1 display='inline' fontSize='16px'>OWDIN Wallet</H1> */}
+        <H1>{props.settingStore.title}</H1>
       </HeaderDiv>
       <Badge
-        status={status.online}
+        status={status[props.settingStore.status]}
         // text={props.network}
         text='JungleNet'
         style={{
@@ -63,6 +70,6 @@ const Header = observer((props) => {
       />
     </HeaderWrapper>
   )
-})
+}))
 
 export default Header

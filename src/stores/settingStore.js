@@ -2,6 +2,9 @@ import {
   action,
   observable,
 } from 'mobx'
+import {
+  setPassword as extensionSetPassword,
+} from '../utils/chromeApi'
 import Log from '../utils/debugLog'
 
 const mainnetChainID = 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
@@ -10,6 +13,12 @@ class SettingStore {
   @observable loading = false
 
   @observable updating = false
+
+  @observable currentMenu = '/'
+
+  @observable title = '/'
+
+  @observable status = 'online'
 
   @observable endpoints = [
     {
@@ -31,6 +40,12 @@ class SettingStore {
     },
   ]
 
+  @observable password = ''
+
+  @action updateCurrentMenu(menu) {
+    this.currentMenu = menu
+    this.title = menu.charAt(1).toUpperCase() + menu.slice(2)
+  }
 
   @action addEndpoint(endpoint) {
     this.updating = true
@@ -52,6 +67,15 @@ class SettingStore {
     } finally {
       this.updating = false
     }
+  }
+
+  @action setPassword(password) {
+    extensionSetPassword(password)
+    return false
+  }
+
+  @action getPassword() {
+    this.password = ''
   }
 }
 

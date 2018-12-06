@@ -1,8 +1,10 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { observable } from 'mobx'
 import {
-  // inject,
+  observable,
+} from 'mobx'
+import {
+  inject,
   observer,
 } from 'mobx-react'
 import {
@@ -54,18 +56,26 @@ const TitleIcon = styled(Icon)`
 margin-right: 10px;
 `
 
-// @inject('accountStore')
+@inject('settingStore')
 @observer
 class SidebarMenu extends React.Component {
   @observable selectedMenu = window.location.href.split('#')[1]
 
+  account = 'eosadditapps'
+
   constructor(props) {
     super(props)
 
-    this.account = 'eosadditapps'
-
     if (window.location.href.split('#')[1] === '/') {
-      this.selectedMenu = '/dashboard'
+      this.selectedMenu = '/feed'
+    }
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    Log.info('Sidebar::getDerivedStateFromProps()', { nextProps, prevState })
+
+    if (nextProps) {
+      nextProps.settingStore.updateCurrentMenu(window.location.href.split('#')[1])
     }
   }
 

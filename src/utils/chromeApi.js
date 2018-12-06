@@ -18,13 +18,11 @@ export const sample = {
     ],
   },
   authenticate: {
-    passphrase: 'sample-string',
+    password: 'sample-password',
+    passphrase: 'sample-passphrase',
   },
   status: 'online', // online, offline, locked, unset
 }
-
-// TODO: Use Mobx Store
-let _storageData = null
 
 export function version() {
   try {
@@ -98,18 +96,21 @@ export function setStatus(status, accountStore = null) {
   Log.info('chromeApi::accountStore', accountStore)
 }
 
-export function setPassphrase(passphrase) {
+export function setPassword(password) {
   try {
     if (isExtension()) {
       /* eslint-disable */
       chrome.storage.local.set({
         authenticate: {
-          passphrase,
+          password,
         },
       })
       /* eslint-enable */
     } else {
-      localStorage.setItem('passphrase', passphrase)
+      const passwordObj = {
+        password,
+      }
+      localStorage.setItem('authenticate', JSON.stringify(passwordObj))
     }
   } catch (error) {
     throw error
@@ -120,16 +121,16 @@ export function setPassphrase(passphrase) {
  * TODO: Wrapping up for Multiple Browser Storage
  * Get browser storage data
  */
-async function _getStorageValue(item = null) {
-  const local = chrome.storage.local
+// async function _getStorageValue(item = null) {
+//   const local = chrome.storage.local
 
-  local.get([item], (result) => {
-    _storageData = result[item]
-  })
-  await _storageData
+//   local.get([item], (result) => {
+//     _storageData = result[item]
+//   })
+//   await _storageData
 
-  return _storageData
-}
+//   return _storageData
+// }
 
 /**
  * Set account and private keys
