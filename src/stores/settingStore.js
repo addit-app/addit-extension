@@ -6,6 +6,7 @@ import {
 } from 'mobx'
 import {
   setPassword as extensionSetPassword,
+  getPassword as extensionGetPassword,
   setStatus as extensionSetStatus,
   getStatus as extensionGetStatus,
 } from '../utils/chromeApi'
@@ -25,6 +26,8 @@ class SettingStore {
   @observable title = 'Addit'
 
   @observable status = null
+
+  @observable password = null
 
   @observable endpoints = [
     {
@@ -77,11 +80,11 @@ class SettingStore {
 
   @action setPassword(password) {
     extensionSetPassword(password)
-    return false
+    this.password = password
   }
 
-  @action getPassword() {
-    this.password = ''
+  @action getPasswordFromBrowser(storeObj) {
+    extensionGetPassword(storeObj)
   }
 
   @action setStatus(status) {

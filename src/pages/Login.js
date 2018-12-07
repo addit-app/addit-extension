@@ -32,23 +32,26 @@ class Login extends React.Component {
 
     this.state = {
       isValid: false,
-      passphrase: '',
+      password: '',
     }
   }
 
   onSubmit = (event) => {
     event.preventDefault()
-    const isValid = true
 
-    if (isValid) {
+    this.props.settingStore.getPasswordFromBrowser(this.props.settingStore)
+    Log.info('Login::onSubmit()', [this.props.settingStore.password, this.state.password])
+    if (this.props.settingStore.password === this.state.password) {
       this.props.settingStore.setStatus('online')
-    } else {
-      message.error('Invalid passphrase. Try Again.')
-    }
 
-    this.setState({
-      passphrase: '',
-    })
+      this.setState({
+        password: '',
+      })
+
+      message.success('Unlocked.')
+    } else {
+      message.error('Invalid password. Try Again.')
+    }
   }
 
   handleChange = (event) => {
@@ -58,7 +61,7 @@ class Login extends React.Component {
   }
 
   render() {
-    Log.info('Login::render()')
+    Log.info('Login::render()', this.props)
 
     if (this.state.isValid) {
       return <Redirect to='/index.html#/feed' />
@@ -112,12 +115,12 @@ class Login extends React.Component {
           >
             <FormItem>
               <Input
-                id='passphrase'
-                name='passphrase'
+                id='password'
+                name='password'
                 type='password'
-                value={this.state.passphrase}
+                value={this.state.password}
                 prefix={<Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder='Passphrase'
+                placeholder='password'
                 onChange={e => this.handleChange(e)}
               />
             </FormItem>

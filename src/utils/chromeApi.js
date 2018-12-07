@@ -49,24 +49,28 @@ export function isExtension() {
 //   return _storageData
 // }
 
-export function getStatus(storeObj = null) {
+export function getPassword(storeObj = null) {
   try {
     if (isExtension()) {
       /* eslint-disable */
-      chrome.storage.local.get('status', item => {
+      chrome.storage.local.get('authentication', item => {
         if (storeObj) {
-          if (item.status !== storeObj.status && JSON.stringify(item) !== '{}') {
-            storeObj.setStatus(item.status)
-            localStorage.setItem('status', item.status)
+          if (item.password !== storeObj.password && JSON.stringify(item) !== '{}') {
+            storeObj.setStatus(item.password)
+            const passwordObj = {
+              password,
+            }
+            localStorage.setItem('authenticate', JSON.stringify(passwordObj))
           }
         }
       })
       /* eslint-enable */
     } else {
-      storeObj.setStatus(localStorage.getItem('status'))
+      storeObj.setPassword(JSON.parse(localStorage.getItem('authenticate')).password)
+      Log.info('chromeApi::getPassword()', JSON.parse(localStorage.getItem('authenticate')).password)
     }
   } catch (err) {
-    Log.error('chromeApi::getStatus()', err)
+    Log.error('chromeApi::getPassword()', err)
   }
 }
 
@@ -88,6 +92,27 @@ export function setPassword(password) {
     }
   } catch (err) {
     Log.error('chromeApi::setPassword()', err)
+  }
+}
+
+export function getStatus(storeObj = null) {
+  try {
+    if (isExtension()) {
+      /* eslint-disable */
+      chrome.storage.local.get('status', item => {
+        if (storeObj) {
+          if (item.status !== storeObj.status && JSON.stringify(item) !== '{}') {
+            storeObj.setStatus(item.status)
+            localStorage.setItem('status', item.status)
+          }
+        }
+      })
+      /* eslint-enable */
+    } else {
+      storeObj.setStatus(localStorage.getItem('status'))
+    }
+  } catch (err) {
+    Log.error('chromeApi::getStatus()', err)
   }
 }
 
