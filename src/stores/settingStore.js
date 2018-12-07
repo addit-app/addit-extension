@@ -90,6 +90,10 @@ class SettingStore {
   @action setStatus(status) {
     extensionSetStatus(status)
     this.status = status
+
+    if (status === 'locked') {
+      this.currentMenu = '/'
+    }
   }
 
   @action getStatusFromBrowser(storeObj) {

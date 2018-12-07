@@ -169,7 +169,7 @@ export function newWindow() {
   window.open(window.location.href, 'OWDIN Wallet', 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=yes,width=380,height=800')
 }
 
-export function resetExtension() {
+export function resetExtension(storeObj = null) {
   if (isExtension()) {
     try {
       /* eslint-disable */
@@ -182,6 +182,12 @@ export function resetExtension() {
 
   localStorage.clear()
   sessionStorage.clear()
+
+  if (storeObj != null) {
+    storeObj.setStatus('null')
+  } else {
+    setStatus('unset')
+  }
 }
 
 export default isExtension

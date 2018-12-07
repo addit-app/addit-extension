@@ -105,9 +105,10 @@ class App extends React.Component {
   }
 
   render() {
-    Log.info('App::render()', JSON.stringify(this.props))
+    // Log.info('App::render()', JSON.stringify(this.props))
+    Log.info('App::render()', this.props)
 
-    switch (this.props.settingStore.status || localStorage.getItem('status')) {
+    switch (this.props.settingStore.status) {
       case 'online':
       case 'offline':
         return (

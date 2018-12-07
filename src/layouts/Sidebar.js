@@ -68,22 +68,22 @@ class SidebarMenu extends React.Component {
     }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    Log.info('Sidebar::getDerivedStateFromProps()', { nextProps, prevState })
+  // static getDerivedStateFromProps(nextProps) {
+  //   Log.info('Sidebar::getDerivedStateFromProps()', nextProps)
 
-    if (nextProps) {
-      if (window.location.href.split('#')[1] === '/') {
-        nextProps.settingStore.updateCurrentMenu('/feed')
-      } else {
-        nextProps.settingStore.updateCurrentMenu(window.location.href.split('#')[1])
-      }
-    }
+  //   if (nextProps) {
+  //     if (window.location.href.split('#')[1] === '/') {
+  //       nextProps.settingStore.updateCurrentMenu('/feed')
+  //     } else {
+  //       nextProps.settingStore.updateCurrentMenu(window.location.href.split('#')[1])
+  //     }
+  //   }
 
-    return null
-  }
+  //   return null
+  // }
 
   render() {
-    Log.info('Sidebar::render()', JSON.stringify(this.props))
+    Log.info('Sidebar::render()', this.props)
 
     return (
       <Div>
@@ -166,7 +166,6 @@ class SidebarMenu extends React.Component {
               to='/logout'
               onClick={() => {
                 this.props.settingStore.setStatus('locked')
-                this.props.settingStore.updateCurrentMenu('/feed')
               }}
             >
               <Icon type='logout' theme='outlined' />

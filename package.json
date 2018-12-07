@@ -9,6 +9,7 @@
     "antd": "^3.10.3",
     "babel-plugin-import": "^1.11.0",
     "babel-preset-mobx": "^2.0.0",
+    "bytes": "^3.0.0",
     "debug": "^4.1.0",
     "eosjs": "^20.0.0-beta2",
     "eosjs-api": "^7.0.4",

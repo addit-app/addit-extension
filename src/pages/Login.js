@@ -34,24 +34,23 @@ class Login extends React.Component {
       isValid: false,
       password: '',
     }
-  }
-
-  onSubmit = (event) => {
-    event.preventDefault()
 
     this.props.settingStore.getPasswordFromBrowser(this.props.settingStore)
+  }
+
+  onSubmit = () => {
     Log.info('Login::onSubmit()', [this.props.settingStore.password, this.state.password])
+
     if (this.props.settingStore.password === this.state.password) {
       this.props.settingStore.setStatus('online')
-
-      this.setState({
-        password: '',
-      })
-
       message.success('Unlocked.')
     } else {
       message.error('Invalid password. Try Again.')
     }
+
+    this.setState({
+      password: '',
+    })
   }
 
   handleChange = (event) => {
@@ -106,7 +105,7 @@ class Login extends React.Component {
         </Div>
         <Div>
           <Form
-            onSubmit={this.onSubmit}
+            onSubmit={() => this.onSubmit()}
             style={{
               width: '280px',
               margin: '0 auto',

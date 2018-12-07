@@ -121,8 +121,8 @@ class Setup extends React.Component {
   done = () => {
     setPassword(this.state.password)
     setKeyPairs(this.state.account, this.state.privateKey)
-    this.props.accountStore.setAccount(this.state.account)
     this.props.settingStore.setStatus('online')
+    this.props.accountStore.setAccount(this.state.account)
   }
 
   render() {

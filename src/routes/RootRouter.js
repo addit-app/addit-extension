@@ -6,12 +6,12 @@ import {
 } from 'react-router-dom'
 import {
   inject,
-  observer,
 } from 'mobx-react'
 import {
   Div,
 } from 'glamorous'
 import history from '../utils/history'
+import Log from '../utils/debugLog'
 import Feed from '../pages/Feed'
 import Wallet from '../pages/Wallet'
 import Settings from '../pages/Settings'
@@ -25,36 +25,38 @@ const Error404 = ({ location }) => (
 )
 
 @inject('settingStore')
-@observer
 class RootRouter extends React.Component {
   render() {
+    Log.info('RootRouter()::render()', this.props)
+
     return (
       <Switch history={history}>
         <Route
           exact
           path='/feed'
           render={() => {
-            return <Feed {...this.props} />
+            return <Feed />
           }}
         />
         <Route
           exact
           path='/wallet'
           render={() => {
-            return <Wallet {...this.props} />
+            return <Wallet />
           }}
         />
         <Route
           exact
           path='/settings'
           render={() => {
-            return <Settings {...this.props} />
+            return <Settings />
           }}
         />
         <Route
           exact
           path='/logout'
           render={() => {
+            this.props.settingStore.setStatus('locked')
             return <Redirect to='/' />
           }}
         />
@@ -64,7 +66,6 @@ class RootRouter extends React.Component {
           exact
           path='/'
           render={() => {
-            // window.location.reload()
             return <Redirect to='/feed' />
           }}
         />
