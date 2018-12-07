@@ -1,8 +1,8 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import {
-  observable,
-} from 'mobx'
+// import {
+//   observable,
+// } from 'mobx'
 import {
   inject,
   observer,
@@ -59,13 +59,12 @@ margin-right: 10px;
 @inject('settingStore', 'accountStore')
 @observer
 class SidebarMenu extends React.Component {
-  @observable selectedMenu = window.location.href.split('#')[1]
-
   constructor(props) {
     super(props)
 
+    this.props.settingStore.updateCurrentMenu(window.location.href.split('#')[1])
     if (window.location.href.split('#')[1] === '/') {
-      this.selectedMenu = '/feed'
+      this.props.settingStore.updateCurrentMenu('/feed')
     }
   }
 
@@ -119,12 +118,12 @@ class SidebarMenu extends React.Component {
         </Div>
         <Menu
           mode='inline'
-          selectedKeys={[this.selectedMenu]}
+          selectedKeys={[this.props.settingStore.currentMenu]}
         >
           <Menu.Item
             key='/feed'
             onClick={(item) => {
-              this.selectedMenu = item.key
+              this.props.settingStore.updateCurrentMenu(item.key)
               this.props.closeSidebar()
             }}
           >
@@ -136,7 +135,7 @@ class SidebarMenu extends React.Component {
           <Menu.Item
             key='/wallet'
             onClick={(item) => {
-              this.selectedMenu = item.key
+              this.props.settingStore.updateCurrentMenu(item.key)
               this.props.closeSidebar()
             }}
           >
@@ -148,7 +147,7 @@ class SidebarMenu extends React.Component {
           <Menu.Item
             key='/settings'
             onClick={(item) => {
-              this.selectedMenu = item.key
+              this.props.settingStore.updateCurrentMenu(item.key)
               this.props.closeSidebar()
             }}
           >
