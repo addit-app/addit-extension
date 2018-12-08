@@ -21,7 +21,7 @@ const FlexRow = styled(Row)`
 `
 const FlexCol = styled(Col)`
   width: 100%;
-  max-width: 400px;
+  max-width: 520px;
   margin-top: 1rem;
   @media (max-width: 700px) {
     max-width: 100%;
@@ -37,6 +37,7 @@ const data = [
     upvote: 0,
     downvote: 0,
     blocktime: 0,
+    reward: 0,
   },
   {
     id: 1,
@@ -45,6 +46,7 @@ const data = [
     upvote: 0,
     downvote: 0,
     blocktime: 0,
+    reward: 0,
   },
   {
     id: 2,
@@ -53,6 +55,7 @@ const data = [
     upvote: 0,
     downvote: 0,
     blocktime: 0,
+    reward: 0,
   },
   {
     id: 3,
@@ -61,6 +64,7 @@ const data = [
     upvote: 0,
     downvote: 0,
     blocktime: 0,
+    reward: 0,
   },
   {
     id: 4,
@@ -69,6 +73,7 @@ const data = [
     upvote: 0,
     downvote: 0,
     blocktime: 0,
+    reward: 0,
   },
   {
     id: 5,
@@ -77,6 +82,7 @@ const data = [
     upvote: 0,
     downvote: 0,
     blocktime: 0,
+    reward: 0,
   },
 ]
 

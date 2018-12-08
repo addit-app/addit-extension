@@ -21,11 +21,6 @@ import styled from 'styled-components'
 const TitleAvatar = styled(Avatar)`
   margin-right: 0.6rem !important;
 `
-const MetaIconLink = styled.a`
-  margin-right: 8px;
-  color: #99aab5;
-  transition: none;
-`
 const UpperDiv = styled.div`
   margin-bottom: 1rem;
 `
@@ -34,6 +29,20 @@ const Comment = styled.p`
   line-height: 1.8;
   font-weight: normal;
   color: black;
+`
+const MetaDiv = styled.div`
+  width: 50%;
+  float: left;
+`
+const RewardDiv = styled.div`
+  width: 50%;
+  float: right;
+  text-align: right;
+`
+const MetaIconLink = styled.a`
+  margin-right: 8px;
+  color: #99aab5;
+  transition: none;
 `
 
 @inject('accountStore')
@@ -84,14 +93,19 @@ class CardTemplate extends React.Component {
           </Comment>
         </UpperDiv>
 
-        <div>
+        <MetaDiv>
           <MetaIconLink role='presentation'>
             <Icon type='like' /> {this.props.upvote}
           </MetaIconLink>
           <MetaIconLink role='presentation'>
             <Icon type='dislike' /> {this.props.downvote}
           </MetaIconLink>
-        </div>
+        </MetaDiv>
+        <RewardDiv>
+          <MetaIconLink role='presentation'>
+            <Icon type='dollar' /> {this.props.reward}
+          </MetaIconLink>
+        </RewardDiv>
       </Card>
     )
   }
