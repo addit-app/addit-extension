@@ -21,7 +21,7 @@ class SettingStore {
 
   @observable currentMenu = '/'
 
-  @observable currentNetwork = 'Offline'
+  @observable currentNetwork = 'Local TestNet'
 
   @observable title = 'Addit'
 

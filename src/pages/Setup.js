@@ -167,7 +167,7 @@ class Setup extends React.Component {
             width='52px'
             height='52px'
           />
-          <H1>Set up your wallet</H1>
+          <H1>Set up your account</H1>
           {
           (window.name)
             ? ''
