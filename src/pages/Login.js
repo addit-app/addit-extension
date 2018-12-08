@@ -82,14 +82,14 @@ class Login extends React.Component {
         >
           <Img
             src={AppIcon}
-            alt='OWDIN Wallet Icon'
+            alt='Addit Extension Icon'
             width='52px'
             height='52px'
           />
           <H1
             marginTop='10px'
           >
-            OWDIN Wallet
+            Addit Extension
           </H1>
           {
           (window.name)

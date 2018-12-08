@@ -166,7 +166,7 @@ export function setKeyPairs(accountName, privateKeys) {
 }
 
 export function newWindow() {
-  window.open(window.location.href, 'OWDIN Wallet', 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=yes,width=380,height=800')
+  window.open(window.location.href, 'Addit Extension', 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=yes,width=380,height=800')
 }
 
 export function resetExtension(storeObj = null) {

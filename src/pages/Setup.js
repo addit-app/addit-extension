@@ -163,7 +163,7 @@ class Setup extends React.Component {
         <TitleDiv>
           <Img
             src={AppIcon}
-            alt='OWDIN Wallet Icon'
+            alt='Addit Extension Icon'
             width='52px'
             height='52px'
           />

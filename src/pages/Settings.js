@@ -66,7 +66,12 @@ class Settings extends React.Component {
         >
           <FlexCol>
             <Button>
-              <NavLink to='/logout'>
+              <NavLink
+                to='/logout'
+                onClick={() => {
+                  this.props.settingStore.setStatus('locked')
+                }}
+              >
                 Logout
               </NavLink>
             </Button>
