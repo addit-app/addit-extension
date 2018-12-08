@@ -12,6 +12,7 @@ import Log from './debugLog'
 // const httpEndpoint = 'https://jungle2.cryptolions.io'
 const httpEndpoint = 'https://eos-kr.owdin.network:8888'
 // const defaultPrivKey = ''
+// const contractAccount = 'eosadditapps'
 
 const eosOption = {
   verbose: false, // API logging

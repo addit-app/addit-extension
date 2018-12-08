@@ -10,7 +10,9 @@ import {
   Row,
 } from 'antd'
 import styled from 'styled-components'
-import CommentCard from '../components/Card/CommentCard'
+import QuickEditor from '../components/QuickEditor'
+import CommentCard from '../components/card/CommentCard'
+import Log from '../utils/debugLog'
 
 const FlexRow = styled(Row)`
   display: flex;
@@ -37,6 +39,7 @@ const FlexCol = styled(Col)`
 @observer
 class Feed extends React.Component {
   render() {
+    Log.info('Feed::render()')
     return (
       <div>
         <FlexRow
@@ -51,9 +54,10 @@ class Feed extends React.Component {
               type='info'
               showIcon
               style={{
-                marginBottom: '1rem',
+                margin: '1rem',
               }}
             />
+            <QuickEditor />
             <List
               grid={{
                 gutter: 1,
