@@ -10,6 +10,11 @@
     "default_popup": "index.html",
     "default_title": "Addit"
   },
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {

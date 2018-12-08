@@ -127,7 +127,7 @@ class Setup extends React.Component {
 
   render() {
     if (isExtension()) {
-      newWindow()
+      // newWindow()
     }
 
     const steps = [{

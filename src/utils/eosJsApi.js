@@ -23,7 +23,7 @@ const eosOption = {
   // },
   fetchConfiguration: {},
 }
-export const eos = EosApi(eosOption)
+export const eosApi = EosApi(eosOption)
 
 // const rpc = new JsonRpc(httpEndpoint)
 // const signatureProvider = new JsSignatureProvider([defaultPrivKey])
@@ -48,7 +48,7 @@ export function privToPub(privateKey) {
 export async function getAccountsByPubKey(publicKey) {
   let result = false
 
-  await eos.getKeyAccounts(publicKey).then((resp) => {
+  await eosApi.getKeyAccounts(publicKey).then((resp) => {
     result = resp.account_names
   }).catch((error) => {
     Log.error('eosJsApi::getAccountByPrivKey()', error)
@@ -72,4 +72,4 @@ export async function getAccountsByPubKey(publicKey) {
 //   return data
 // }
 
-export default eos
+export default eosApi

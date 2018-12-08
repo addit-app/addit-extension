@@ -35,9 +35,15 @@ const FlexCol = styled(Col)`
   }
 `
 
-@inject('feedStore')
+@inject('feedStore', 'commentStore')
 @observer
 class Feed extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.props.feedStore.getFeed(this.props.commentStore.url)
+  }
+
   render() {
     Log.info('Feed::render()')
     return (

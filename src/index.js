@@ -17,7 +17,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 MobXConfig({
   // don't allow state modifications outside actions
-  enforceActions: 'always',
+  // enforceActions: 'always',
 })
 
 // live debug mode

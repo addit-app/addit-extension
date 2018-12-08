@@ -24,6 +24,10 @@ const TitleAvatar = styled(Avatar)`
 const UpperDiv = styled.div`
   margin-bottom: 1rem;
 `
+const Timestamp = styled.span`
+  color: #888;
+  font-style: italic;
+`
 const Comment = styled.p`
   font-size: 1rem;
   line-height: 1.8;
@@ -59,6 +63,7 @@ class CardTemplate extends React.Component {
               icon='user'
             />
             {this.props.account}
+            <Timestamp> - BlockTime : {this.props.blocktime}</Timestamp>
           </span>
           )}
         type='inner'

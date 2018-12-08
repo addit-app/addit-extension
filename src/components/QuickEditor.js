@@ -5,29 +5,48 @@ import {
 } from 'mobx-react'
 import {
   Button,
+  Icon,
   Input,
   message,
 } from 'antd'
 import {
   Div,
-  Span,
 } from 'glamorous'
 import Log from '../utils/debugLog'
+import {
+  getCurrentTabURL,
+} from '../utils/chromeApi'
 
 const { TextArea } = Input
 
-@inject('commentStore')
+@inject('commentStore', 'feedStore')
 @observer
 class QuickEditor extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
+      url: localStorage.getItem('url'),
       comment: '',
     }
+
+    getCurrentTabURL(this.props.commentStore)
+    this.props.feedStore.getFeed(this.state.url)
   }
 
-  editComment = (e) => {
+  updateStoreURL = () => {
+    this.props.commentStore.setUrl(this.state.url)
+    this.props.feedStore.getFeed(this.state.url)
+    Log.info('QuickEditor::updateStoreURL()', this.props)
+  }
+
+  handleURL = (e) => {
+    this.setState({
+      url: e.target.value,
+    })
+  }
+
+  handleComment = (e) => {
     this.setState({
       comment: e.target.value,
     })
@@ -42,40 +61,35 @@ class QuickEditor extends React.Component {
         marginBottom='1rem'
         padding='0.6rem'
       >
-        <Div
-          height='1.8rem'
-        >
-          <Span
-            fontWeight='bold'
-            marginRight='10px'
-            float='left'
-          >
-            URL
-          </Span>
-          <Span
-            maxWidth='360px'
-            whiteSpace='nowrap'
-            overflow='hidden'
-            textOverflow='ellipsis'
-            float='left'
-            display='inline-block'
-          >
-            {this.props.commentStore.comment || localStorage.getItem('url')}
-          </Span>
-        </Div>
+        <Input
+          name='url'
+          value={this.state.url}
+          onChange={e => this.handleURL(e)}
+          addonBefore='URL'
+          addonAfter={(
+            <span role='presentation' onClick={() => this.updateStoreURL()}>
+              <Icon type='sync' />
+            </span>
+          )}
+          style={{
+            marginBottom: '0.6rem',
+          }}
+        />
         <TextArea
           name='comment'
           value={this.state.comment}
           rows={5}
           autosize={false}
-          onChange={e => this.editComment(e)}
+          onChange={e => this.handleComment(e)}
+          style={{
+            resize: 'none',
+          }}
         />
         <Button
           type='primary'
           style={{
             float: 'right',
-            marginTop: '1rem',
-            marginRight: '1rem',
+            marginTop: '0.6rem',
           }}
           onClick={() => {
             message.info('Submit')

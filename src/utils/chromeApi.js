@@ -34,6 +34,38 @@ export function isExtension() {
   return false
 }
 
+export function getCurrentTabURL(storeObj = null) {
+  try {
+    if (isExtension()) {
+      /* eslint-disable */
+      chrome.tabs.query({
+        'active': true,
+        'currentWindow': true,
+        'lastFocusedWindow': true
+      }, (tabs) => {
+        if (storeObj && tabs[0].url !== 'undefined') {
+          Log.info('Chrome Tab', tabs)
+          storeObj.setUrl(tabs[0].url)
+          localStorage.setItem('url', tabs[0].url)
+        } else {
+          storeObj.setUrl('')
+          localStorage.setItem('url', '')
+        }
+        localStorage.setItem('tabs', JSON.stringify(tabs))
+      })
+      /* eslint-enable */
+    } else {
+      if (storeObj) {
+        storeObj.setUrl(window.location.href)
+      }
+
+      localStorage.setItem('url', window.location.href)
+    }
+  } catch (err) {
+    Log.error('chromeApi::getCurrentTabURL()', err)
+  }
+}
+
 /**
  * TODO: Wrapping up for Multiple Browser Storage
  * Get browser storage data

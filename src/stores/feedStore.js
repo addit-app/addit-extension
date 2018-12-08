@@ -3,70 +3,64 @@ import {
   observable,
 } from 'mobx'
 import Log from '../utils/debugLog'
+import { eosApi } from '../utils/eosJsApi'
 
 class FeedStore {
-  @observable feedItems = [
-    {
-      id: 0,
-      account: 'sampleaccount0',
-      comment: 'Comment 0',
-      upvote: 0,
-      downvote: 0,
-      blocktime: 0,
-      reward: 0,
-    },
-    {
-      id: 1,
-      account: 'sampleaccount1',
-      comment: 'Comment 1',
-      upvote: 0,
-      downvote: 0,
-      blocktime: 0,
-      reward: 0,
-    },
-    {
-      id: 2,
-      account: 'sampleaccount2',
-      comment: 'Comment 2',
-      upvote: 0,
-      downvote: 0,
-      blocktime: 0,
-      reward: 0,
-    },
-    {
-      id: 3,
-      account: 'sampleaccount3',
-      comment: 'Comment 3',
-      upvote: 0,
-      downvote: 0,
-      blocktime: 0,
-      reward: 0,
-    },
-    {
-      id: 4,
-      account: 'sampleaccount4',
-      comment: 'Comment 4',
-      upvote: 0,
-      downvote: 0,
-      blocktime: 0,
-      reward: 0,
-    },
-  ]
+  @observable feedItems = []
+
+  @observable start = 0
+
+  @observable end = -1
+
+  @observable more = false
+
+  @observable moreURL = false
+
+  @observable scopeURL = 0
 
   @observable loading = false
 
-  @action readAccount() {
+  @action getFeed(url) {
+    Log.info('feedStore::getFeed()')
     this.loading = true
-    return this.api.readAccount()
-      .then(action(({ resp }) => {
-        this.feedItems = resp
-      }))
-      .catch((err) => {
-        Log.error('accountStore::readAccount()', err)
-      })
-      .finally(action(() => {
-        this.loading = false
-      }))
+    eosApi.getTableRows(
+      true, // json
+      'eosadditapps', // contract
+      'eosadditapps', // scope
+      'opinion', // table
+      0, // key
+      this.start, // start
+      this.end, // end
+      10000, // limit - MUSTFIX
+    ).then((respURL) => {
+      for (let index = 0; index < respURL.rows.length; index++) {
+        if (respURL.rows[index].url === url) {
+          this.scopeURL = respURL.rows[index].index
+          eosApi.getTableRows(
+            true, // json
+            'eosadditapps', // contract
+            respURL.rows[index].index, // scope
+            'comments', // table
+            0, // key
+            this.start, // start
+            this.end, // end
+            10, // limit
+          ).then((respComment) => {
+            Log.info('feedStore::getFeed(URL)', { url, respComment })
+            this.feedItems = respComment.rows
+            this.more = respComment.more
+          }).catch((err) => {
+            Log.error('feedStore::getFeed()', err)
+          })
+        } else {
+          this.scopeURL = 0
+        }
+      }
+    }).catch((err) => {
+      Log.error('feedStore::getFeed()', err)
+    })
+
+    this.loading = false
   }
 
   @action deleteFeed() {

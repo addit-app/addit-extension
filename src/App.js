@@ -10,9 +10,6 @@ import {
 import {
   Layout,
 } from 'antd'
-// import {
-//   getStatus,
-// } from '../utils/chromeApi'
 import Sidebar from 'react-sidebar'
 import history from './utils/history'
 import Log from './utils/debugLog'
@@ -33,8 +30,8 @@ const mql = window.matchMedia('(min-width: 576px)')
 @inject('accountStore', 'settingStore')
 @observer
 class App extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
     this.state = {
       open: false,
