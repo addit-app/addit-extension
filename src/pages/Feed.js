@@ -1,5 +1,9 @@
 import React from 'react'
 import {
+  inject,
+  observer,
+} from 'mobx-react'
+import {
   Alert,
   List,
   Col,
@@ -29,63 +33,8 @@ const FlexCol = styled(Col)`
   }
 `
 
-const data = [
-  {
-    id: 0,
-    account: 'sampleaccount0',
-    comment: 'Comment 0',
-    upvote: 0,
-    downvote: 0,
-    blocktime: 0,
-    reward: 0,
-  },
-  {
-    id: 1,
-    account: 'sampleaccount1',
-    comment: 'Comment 1',
-    upvote: 0,
-    downvote: 0,
-    blocktime: 0,
-    reward: 0,
-  },
-  {
-    id: 2,
-    account: 'sampleaccount2',
-    comment: 'Comment 2',
-    upvote: 0,
-    downvote: 0,
-    blocktime: 0,
-    reward: 0,
-  },
-  {
-    id: 3,
-    account: 'sampleaccount3',
-    comment: 'Comment 3',
-    upvote: 0,
-    downvote: 0,
-    blocktime: 0,
-    reward: 0,
-  },
-  {
-    id: 4,
-    account: 'sampleaccount4',
-    comment: 'Comment 4',
-    upvote: 0,
-    downvote: 0,
-    blocktime: 0,
-    reward: 0,
-  },
-  {
-    id: 5,
-    account: 'sampleaccount5',
-    comment: 'Comment 5',
-    upvote: 0,
-    downvote: 0,
-    blocktime: 0,
-    reward: 0,
-  },
-]
-
+@inject('feedStore')
+@observer
 class Feed extends React.Component {
   render() {
     return (
@@ -109,12 +58,13 @@ class Feed extends React.Component {
               grid={{
                 gutter: 1,
               }}
-              dataSource={data}
+              dataSource={this.props.feedStore.feedItems}
               renderItem={comment => (
                 <List.Item>
                   <CommentCard {...comment} />
                 </List.Item>
               )}
+              loading={this.props.feedStore.loading}
             />
           </FlexCol>
         </FlexRow>

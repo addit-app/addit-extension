@@ -48,22 +48,6 @@ const MetaIconLink = styled.a`
 @inject('accountStore')
 @observer
 class CardTemplate extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      loading: true,
-    }
-  }
-
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({
-        loading: false,
-      })
-    }, 2000)
-  }
-
   render() {
     return (
       <Card
@@ -85,7 +69,6 @@ class CardTemplate extends React.Component {
             </Tooltip>
           </div>
         )}
-        loading={this.state.loading}
       >
         <UpperDiv>
           <Comment>
