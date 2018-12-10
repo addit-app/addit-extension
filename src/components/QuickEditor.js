@@ -41,9 +41,13 @@ class QuickEditor extends React.Component {
   }
 
   handleURL = (e) => {
-    this.setState({
-      url: e.target.value,
-    })
+    if (e.key === 'Enter') {
+      this.updateStoreURL()
+    } else {
+      this.setState({
+        url: e.target.value,
+      })
+    }
   }
 
   handleComment = (e) => {
@@ -64,6 +68,7 @@ class QuickEditor extends React.Component {
         <Input
           name='url'
           value={this.state.url}
+          placeholder='URL'
           onChange={e => this.handleURL(e)}
           addonBefore='URL'
           addonAfter={(
@@ -71,6 +76,7 @@ class QuickEditor extends React.Component {
               <Icon type='sync' />
             </span>
           )}
+          onPressEnter={() => this.updateStoreURL()}
           style={{
             marginBottom: '0.6rem',
           }}
