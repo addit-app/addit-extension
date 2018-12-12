@@ -163,7 +163,7 @@ class SidebarMenu extends React.Component {
             }}
           >
             <LogoutNavLink
-              to='/logout'
+              to='/'
               onClick={() => {
                 this.props.settingStore.setStatus('locked')
               }}
