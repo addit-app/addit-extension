@@ -68,4 +68,5 @@ class FeedStore {
   }
 }
 
-export default new FeedStore()
+export const feedStore = new FeedStore()
+export default feedStore

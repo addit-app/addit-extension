@@ -3,6 +3,7 @@ import {
   observable,
 } from 'mobx'
 import Log from '../utils/debugLog'
+import { eosJs } from '../utils/eosJsApi'
 
 class AccountStore {
   @observable account = 'channproject'
@@ -17,11 +18,32 @@ class AccountStore {
 
   @observable updating = false
 
-  @action setAccount(account) {
+  @action createAccount(account) {
+    this.account = account
+    const eos = eosJs('5JUNYmkJ5wVmtVY8x9A1KKzYe9UWLZ4Fq1hzGZxfwfzJB8jkw6u')
     try {
-      this.account = account
-    } catch (error) {
-      Log.error('accountStore::createAccount()', error)
+      const resp = eos.transact({
+        actions: [{
+          account: 'eosadditapps',
+          name: 'signup',
+          authorization: [{
+            actor: account,
+            permission: 'active',
+          }],
+          data: {
+            account,
+            nickname: account,
+            avatar: '',
+            memo: '',
+          },
+        }],
+      }, {
+        blocksBehind: 3,
+        expireSeconds: 30,
+      })
+      Log.info('accountStore::createAccount() - result', resp)
+    } catch (err) {
+      Log.error('accountStore::createAccount()', err)
     }
   }
 
@@ -58,4 +80,5 @@ class AccountStore {
   }
 }
 
-export default new AccountStore()
+export const accountStore = new AccountStore()
+export default accountStore

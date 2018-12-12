@@ -23,6 +23,8 @@ class SettingStore {
 
   @observable currentNetwork = 'Local TestNet'
 
+  @observable currentEndpoint = ''
+
   @observable title = 'Addit'
 
   @observable status = null
@@ -67,6 +69,10 @@ class SettingStore {
     }
   }
 
+  @action updateCurrentEndpoint(endpoint) {
+    this.currentEndpoint = endpoint
+  }
+
   @action deleteEndpoint(endpointId) {
     this.updating = true
     try {
@@ -107,4 +113,5 @@ class SettingStore {
 //   }
 // })
 
-export default new SettingStore()
+export const settingStore = new SettingStore()
+export default settingStore
