@@ -13,6 +13,7 @@ import styled from 'styled-components'
 import QuickEditor from '../components/QuickEditor'
 import CommentCard from '../components/card/CommentCard'
 import Log from '../utils/debugLog'
+import { getCurrentTabURL } from '../utils/chromeApi'
 
 const FlexRow = styled(Row)`
   display: flex;
@@ -38,14 +39,25 @@ const FlexCol = styled(Col)`
 @inject('feedStore', 'commentStore')
 @observer
 class Feed extends React.Component {
+  fetching = false
+
   constructor(props) {
     super(props)
 
-    this.props.feedStore.getFeed(this.props.commentStore.url)
+    getCurrentTabURL()
+    this.props.feedStore.getFeed(this.props.feedStore.url)
+  }
+
+  componentDidMount() {
+    this.fetching = setInterval(this.props.feedStore.getFeed, 5000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.fetching)
   }
 
   render() {
-    Log.info('Feed::render()')
+    Log.info('Feed::render()', this.props)
     return (
       <div>
         <FlexRow

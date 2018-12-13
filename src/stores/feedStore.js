@@ -16,18 +16,22 @@ class FeedStore {
 
   @observable moreURL = false
 
-  @observable scopeURL = 0
+  @observable url = ''
 
-  @observable loading = false
+  @observable indexURL = -1
 
-  @action getFeed(url) {
+  @observable loading = true
+
+  @action getFeed(url = this.url) {
     Log.info('feedStore::getFeed()')
+
     this.loading = true
+    this.feedItems = []
     eosApi.getTableRows(
       true, // json
       'eosadditapps', // contract
       'eosadditapps', // scope
-      'opinion', // table
+      'domain', // table
       0, // key
       this.start, // start
       this.end, // end
@@ -35,7 +39,7 @@ class FeedStore {
     ).then((respURL) => {
       for (let index = 0; index < respURL.rows.length; index++) {
         if (respURL.rows[index].url === url) {
-          this.scopeURL = respURL.rows[index].index
+          this.indexURL = respURL.rows[index].index
           eosApi.getTableRows(
             true, // json
             'eosadditapps', // contract
@@ -46,18 +50,20 @@ class FeedStore {
             this.end, // end
             10, // limit
           ).then((respComment) => {
-            Log.info('feedStore::getFeed(URL)', { url, respComment })
-            this.feedItems = respComment.rows
+            Log.info(`feedStore::getFeed(${url})`, { url, respComment })
+            this.feedItems = respComment.rows.reverse()
             this.more = respComment.more
           }).catch((err) => {
-            Log.error('feedStore::getFeed()', err)
+            Log.error(`feedStore::getFeed(${url}) - EOS API`, err)
           })
+
+          break
         } else {
-          this.scopeURL = 0
+          this.indexURL = -1
         }
       }
     }).catch((err) => {
-      Log.error('feedStore::getFeed()', err)
+      Log.error('feedStore::getFeed() - EOS API', err)
     })
 
     this.loading = false
@@ -66,7 +72,11 @@ class FeedStore {
   @action deleteFeed() {
     this.feedItems = []
   }
+
+  @action setUrl(url) {
+    this.url = url
+  }
 }
 
-export const feedStore = new FeedStore()
+const feedStore = new FeedStore()
 export default feedStore

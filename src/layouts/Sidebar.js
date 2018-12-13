@@ -92,13 +92,13 @@ class SidebarMenu extends React.Component {
           padding='20px'
         >
           <Avatar
-            src={`https://avatars.dicebear.com/v2/identicon/${this.props.accountStore.account}.svg`}
+            src={`https://avatars.dicebear.com/v2/identicon/${this.props.accountStore.currentAccount}.svg`}
             shape='circle'
             size={52}
             icon='user'
           />
           <UpperDiv style={{ marginTop: '10px' }}>
-            <b>{this.props.accountStore.account}</b>
+            <b>{this.props.accountStore.currentAccount}</b>
           </UpperDiv>
           {/* <UpperDiv>
             {accountBalance}

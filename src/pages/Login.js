@@ -17,6 +17,7 @@ import {
   Img,
 } from 'glamorous'
 import {
+  getPassword,
   newWindow,
 } from '../utils/chromeApi'
 import AppIcon from '../assets/img/app-icon.svg'
@@ -35,7 +36,7 @@ class Login extends React.Component {
       password: '',
     }
 
-    this.props.settingStore.getPasswordFromBrowser(this.props.settingStore)
+    getPassword()
   }
 
   onSubmit = () => {

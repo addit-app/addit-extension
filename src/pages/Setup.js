@@ -16,8 +16,9 @@ import {
 import {
   isExtension,
   newWindow,
-  setKeyPairs,
   setPassword,
+  setKeyPairs,
+  setCurrentAccount,
 } from '../utils/chromeApi'
 import Log from '../utils/debugLog'
 import SetPasswordForm from '../components/SetPasswordForm'
@@ -121,8 +122,9 @@ class Setup extends React.Component {
   done = () => {
     setPassword(this.state.password)
     setKeyPairs(this.state.account, this.state.privateKey)
+    setCurrentAccount(this.state.account)
     this.props.settingStore.setStatus('online')
-    this.props.accountStore.setAccount(this.state.account)
+    this.props.accountStore.createAccount(this.state.account)
   }
 
   render() {

@@ -6,10 +6,10 @@ import { configure as MobXConfig } from 'mobx'
 import './assets/css/index.less'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
-import { accountStore } from './stores/accountStore'
-import { feedStore } from './stores/feedStore'
-import { commentStore } from './stores/commentStore'
-import { settingStore } from './stores/settingStore'
+import accountStore from './stores/accountStore'
+import feedStore from './stores/feedStore'
+import commentStore from './stores/commentStore'
+import settingStore from './stores/settingStore'
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.setItem('debug', 'addit-extension:*')

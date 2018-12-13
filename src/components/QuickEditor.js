@@ -13,9 +13,6 @@ import {
   Div,
 } from 'glamorous'
 import Log from '../utils/debugLog'
-import {
-  getCurrentTabURL,
-} from '../utils/chromeApi'
 
 const { TextArea } = Input
 
@@ -29,13 +26,10 @@ class QuickEditor extends React.Component {
       url: localStorage.getItem('url'),
       comment: '',
     }
-
-    getCurrentTabURL(this.props.commentStore)
-    this.props.feedStore.getFeed(this.state.url)
   }
 
   updateStoreURL = () => {
-    this.props.commentStore.setUrl(this.state.url)
+    this.props.feedStore.setUrl(this.state.url)
     this.props.feedStore.getFeed(this.state.url)
     Log.info('QuickEditor::updateStoreURL()', this.props)
   }
@@ -100,6 +94,9 @@ class QuickEditor extends React.Component {
           onClick={() => {
             message.info('Submit')
             this.props.commentStore.write(this.state.comment)
+            this.props.feedStore.getFeed(this.state.url)
+
+            this.setState({ comment: '' })
             Log.info('QuickEditor::submit()', this.props, this.state)
           }}
         >

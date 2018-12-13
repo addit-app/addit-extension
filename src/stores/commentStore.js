@@ -2,17 +2,20 @@ import {
   action,
   observable,
 } from 'mobx'
+import accountStore from './accountStore'
+import feedStore from './feedStore'
 import Log from '../utils/debugLog'
 import { eosJs } from '../utils/eosJsApi'
+import { isExtension } from '../utils/chromeApi'
 
 class CommentStore {
-  @observable url = ''
-
   @observable comment = ''
 
   @observable loading = false
 
   @observable result = null
+
+  @observable resultModalOpen = false
 
   @action submit() {
     this.loading = true
@@ -28,64 +31,75 @@ class CommentStore {
       }))
   }
 
-  @action setUrl(url) {
-    this.url = url
-  }
-
   @action write(text) {
     this.comment = text
-    try {
-      /* eslint-disable */
-      chrome.storage.local.get('keyPairs', items => {
-        const pairs = items.keyPairs
-        Object.keys(pairs).forEach((account) => {
-          if (account === 'MUSTFIX') {
-            // MUSTFIX
-          }
-        })
-      })
-      /* eslint-enable */
+    let resp = ''
 
-      const eos = eosJs('5JUNYmkJ5wVmtVY8x9A1KKzYe9UWLZ4Fq1hzGZxfwfzJB8jkw6u')
-      const resp = eos.transact({
-        // add new account
-        // actions: [{
-        //   account: 'eosadditapps',
-        //   name: 'signup',
-        //   authorization: [{
-        //     actor: 'parkheechann',
-        //     permission: 'active',
-        //   }],
-        //   data: {
-        //     account: 'parkheechann',
-        //     nickname: 'parkheechann',
-        //     avatar: '',
-        //     memo: 'Genesis Account',
-        //   },
-        // }],
-        // add new opinion
-        actions: [{
-          account: 'eosadditapps',
-          name: 'addit',
-          authorization: [{
-            actor: 'parkheechann',
-            permission: 'active',
+    try {
+      if (isExtension()) {
+        /* eslint-disable */
+        chrome.storage.local.get('keyPairs', items => {
+          const pairs = items.keyPairs
+          Object.keys(pairs).forEach((account) => {
+            if (account === accountStore.currentAccount) {
+              const eos = eosJs(items.keyPairs[account])
+
+              resp = eos.transact({
+                // add new opinion
+                actions: [{
+                  account: 'eosadditapps',
+                  name: 'addit',
+                  authorization: [{
+                    actor: accountStore.currentAccount,
+                    permission: 'active',
+                  }],
+                  data: {
+                    account: accountStore.currentAccount,
+                    iopinion: feedStore.indexURL,
+                    url: feedStore.url,
+                    comment: this.comment,
+                  },
+                }],
+              }, {
+                blocksBehind: 3,
+                expireSeconds: 30,
+              })
+
+              Log.info('commentStore::write() - result', resp)
+            }
+          })
+        })
+        /* eslint-enable */
+      } else {
+        const eos = eosJs(JSON.parse(localStorage.getItem('keyPairs'))[localStorage.getItem('currentAccount')])
+        resp = eos.transact({
+          // add new opinion
+          actions: [{
+            account: 'eosadditapps',
+            name: 'addit',
+            authorization: [{
+              actor: accountStore.currentAccount,
+              permission: 'active',
+            }],
+            data: {
+              account: accountStore.currentAccount,
+              iopinion: feedStore.indexURL,
+              url: feedStore.url,
+              comment: this.comment,
+            },
           }],
-          data: {
-            account: 'parkheechann',
-            iopinion: -1,
-            url: this.url,
-            comment: this.comment,
-          },
-        }],
-      }, {
-        blocksBehind: 3,
-        expireSeconds: 30,
-      })
+        }, {
+          blocksBehind: 3,
+          expireSeconds: 30,
+        })
+      }
+
       Log.info('commentStore::write() - result', resp)
     } catch (err) {
       Log.error('commentStore::write()', err)
     }
+
+    feedStore.getFeed(feedStore.url)
   }
 
   @action delete() {
@@ -93,5 +107,5 @@ class CommentStore {
   }
 }
 
-export const commentStore = new CommentStore()
+const commentStore = new CommentStore()
 export default commentStore

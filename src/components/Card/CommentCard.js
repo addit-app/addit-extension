@@ -11,6 +11,7 @@ import {
   Tooltip,
 } from 'antd'
 import styled from 'styled-components'
+import moment from 'moment'
 
 // const colors = {
 //   'primary': '#1890ff',
@@ -63,7 +64,7 @@ class CardTemplate extends React.Component {
               icon='user'
             />
             {this.props.account}
-            <Timestamp> - BlockTime : {this.props.blocktime}</Timestamp>
+            <Timestamp> - {moment(parseInt(this.props.blocktime, 10) / 1000).fromNow()}</Timestamp>
           </span>
           )}
         type='inner'

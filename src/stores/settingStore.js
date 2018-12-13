@@ -5,10 +5,10 @@ import {
   // spy,
 } from 'mobx'
 import {
-  setPassword as extensionSetPassword,
-  getPassword as extensionGetPassword,
-  setStatus as extensionSetStatus,
-  getStatus as extensionGetStatus,
+  setPassword as setPasswordExtension,
+  getPassword as getPasswordExtension,
+  setStatus as setStatusExtension,
+  getStatus as getStatusExtension,
 } from '../utils/chromeApi'
 import Log from '../utils/debugLog'
 
@@ -46,7 +46,7 @@ class SettingStore {
       endpoint: 'https://jungle2.cryptolions.io',
       port: 443,
       type: 'testnet',
-      chainID: mainnetChainID,
+      chainID: '',
       ping: -1,
     },
   ]
@@ -85,16 +85,16 @@ class SettingStore {
   }
 
   @action setPassword(password) {
-    extensionSetPassword(password)
+    setPasswordExtension(password)
     this.password = password
   }
 
   @action getPasswordFromBrowser(storeObj) {
-    extensionGetPassword(storeObj)
+    getPasswordExtension(storeObj)
   }
 
   @action setStatus(status) {
-    extensionSetStatus(status)
+    setStatusExtension(status)
     this.status = status
 
     if (status === 'locked') {
@@ -103,7 +103,20 @@ class SettingStore {
   }
 
   @action getStatusFromBrowser(storeObj) {
-    extensionGetStatus(storeObj)
+    getStatusExtension(storeObj)
+  }
+
+  @action reset() {
+    this.loading = false
+    this.updating = false
+    this.currentMenu = '/'
+    this.currentNetwork = 'Local TestNet'
+    this.currentEndpoint = ''
+    this.title = 'Addit'
+    this.status = null
+    this.password = null
+    this.endpoints = []
+    this.password = ''
   }
 }
 
@@ -113,5 +126,5 @@ class SettingStore {
 //   }
 // })
 
-export const settingStore = new SettingStore()
+const settingStore = new SettingStore()
 export default settingStore

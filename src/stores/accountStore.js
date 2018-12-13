@@ -6,21 +6,21 @@ import Log from '../utils/debugLog'
 import { eosJs } from '../utils/eosJsApi'
 
 class AccountStore {
-  @observable account = 'channproject'
+  @observable currentAccount = ''
 
-  @observable nickname = 'CHANN'
+  @observable nickname = ''
 
-  @observable bio = 'I turn coffee into <code />'
+  @observable bio = ''
 
-  @observable avatar = 'https://avatars0.githubusercontent.com/u/1831308?s=460&v=4'
+  @observable avatar = ''
 
   @observable loading = false
 
   @observable updating = false
 
   @action createAccount(account) {
-    this.account = account
-    const eos = eosJs('5JUNYmkJ5wVmtVY8x9A1KKzYe9UWLZ4Fq1hzGZxfwfzJB8jkw6u')
+    this.currentAccount = account
+    const eos = eosJs('5JaXNBaps36EsupVMcWpex672rJSawg8YKeU6quynSTXdq5naAX')
     try {
       const resp = eos.transact({
         actions: [{
@@ -47,38 +47,10 @@ class AccountStore {
     }
   }
 
-  @action readAccount() {
-    this.loading = true
-    return this.api.auth.current()
-      .then(action(({ resp }) => {
-        this.account = resp
-      }))
-      .catch((err) => {
-        Log.error('accountStore::readAccount()', err)
-      })
-      .finally(action(() => {
-        this.loading = false
-      }))
-  }
-
-  @action updateAccount(account) {
-    this.updating = true
-    return this.api.auth.save(account)
-      .then(action(({ resp }) => {
-        this.account = resp
-      }))
-      .catch((err) => {
-        Log.error('accountStore::updateAccount()', err)
-      })
-      .finally(action(() => {
-        this.updating = false
-      }))
-  }
-
-  @action deleteAccount() {
-    this.account = undefined
+  constructor() {
+    Log.info('accountStore::constructor()')
   }
 }
 
-export const accountStore = new AccountStore()
+const accountStore = new AccountStore()
 export default accountStore

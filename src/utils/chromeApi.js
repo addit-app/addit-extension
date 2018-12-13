@@ -3,9 +3,14 @@
  * Chrome API Wrapper
  */
 import Log from './debugLog'
+import settingStore from '../stores/settingStore'
+import accountStore from '../stores/accountStore'
+import feedStore from '../stores/feedStore'
+// import { commentStore } from '../stores/commentStore'
 
 export const sample = {
   version: '0.0.x',
+  currentAccount: 'eosadditapps',
   keyPairs: {
     accountname1: [
       '5JCJxqB6********',
@@ -34,7 +39,7 @@ export function isExtension() {
   return false
 }
 
-export function getCurrentTabURL(storeObj = null) {
+export function getCurrentTabURL() {
   try {
     if (isExtension()) {
       /* eslint-disable */
@@ -43,22 +48,19 @@ export function getCurrentTabURL(storeObj = null) {
         'currentWindow': true,
         'lastFocusedWindow': true
       }, (tabs) => {
-        if (storeObj && tabs[0].url !== 'undefined') {
+        if (tabs[0].url !== 'undefined') {
           Log.info('Chrome Tab', tabs)
-          storeObj.setUrl(tabs[0].url)
+          feedStore.setUrl(tabs[0].url)
           localStorage.setItem('url', tabs[0].url)
         } else {
-          storeObj.setUrl('')
+          feedStore.setUrl('')
           localStorage.setItem('url', '')
         }
         localStorage.setItem('tabs', JSON.stringify(tabs))
       })
       /* eslint-enable */
     } else {
-      if (storeObj) {
-        storeObj.setUrl(window.location.href)
-      }
-
+      feedStore.setUrl(window.location.href)
       localStorage.setItem('url', window.location.href)
     }
   } catch (err) {
@@ -66,39 +68,22 @@ export function getCurrentTabURL(storeObj = null) {
   }
 }
 
-/**
- * TODO: Wrapping up for Multiple Browser Storage
- * Get browser storage data
- */
-// async function _getStorageValue(item = null) {
-//   const local = chrome.storage.local
-
-//   local.get([item], (result) => {
-//     _storageData = result[item]
-//   })
-//   await _storageData
-
-//   return _storageData
-// }
-
-export function getPassword(storeObj = null) {
+export function getPassword() {
   try {
     if (isExtension()) {
       /* eslint-disable */
       chrome.storage.local.get('authentication', item => {
-        if (storeObj) {
-          if (item.password !== storeObj.password && JSON.stringify(item) !== '{}') {
-            storeObj.setStatus(item.password)
-            const passwordObj = {
-              password,
-            }
-            localStorage.setItem('authenticate', JSON.stringify(passwordObj))
+        if (item.password !== settingStore.password && JSON.stringify(item) !== '{}') {
+          settingStore.setStatus(item.password)
+          const passwordObj = {
+            password,
           }
+          localStorage.setItem('authenticate', JSON.stringify(passwordObj))
         }
       })
       /* eslint-enable */
     } else {
-      storeObj.setPassword(JSON.parse(localStorage.getItem('authenticate')).password)
+      settingStore.setPassword(JSON.parse(localStorage.getItem('authenticate')).password)
       Log.info('chromeApi::getPassword()', JSON.parse(localStorage.getItem('authenticate')).password)
     }
   } catch (err) {
@@ -124,6 +109,39 @@ export function setPassword(password) {
     }
   } catch (err) {
     Log.error('chromeApi::setPassword()', err)
+  }
+}
+
+export function getCurrentAccount() {
+  try {
+    if (isExtension()) {
+      /* eslint-disable */
+      chrome.storage.local.get('currentAccount', (item) => {
+        accountStore.currentAccount = item.currentAccount
+      })
+      /* eslint-enable */
+    } else {
+      accountStore.currentAccount = localStorage.getItem('currentAccount')
+    }
+  } catch (err) {
+    Log.error('chromeApi::getCurrentAccount()', err)
+  }
+}
+
+export function setCurrentAccount(account) {
+  accountStore.currentAccount = account
+  localStorage.setItem('currentAccount', account)
+
+  try {
+    if (isExtension()) {
+      /* eslint-disable */
+      chrome.storage.local.set({
+        currentAccount: account,
+      })
+      /* eslint-enable */
+    }
+  } catch (err) {
+    Log.error('chromeApi::setCurrentAccount()', err)
   }
 }
 
@@ -201,7 +219,7 @@ export function newWindow() {
   window.open(window.location.href, 'Addit Extension', 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=yes,width=380,height=800')
 }
 
-export function resetExtension(storeObj = null) {
+export function resetExtension() {
   if (isExtension()) {
     try {
       /* eslint-disable */
@@ -212,14 +230,11 @@ export function resetExtension(storeObj = null) {
     }
   }
 
+  settingStore.reset()
   localStorage.clear()
   sessionStorage.clear()
 
-  if (storeObj != null) {
-    storeObj.setStatus('null')
-  } else {
-    setStatus('unset')
-  }
+  setStatus('unset')
 }
 
 export default isExtension

@@ -1,17 +1,16 @@
-// import {
-//   Api,
-//   JsonRpc,
-//   // RpcError,
-//   JsSignatureProvider,
-// } from 'eosjs'
+import {
+  Api,
+  JsonRpc,
+  // RpcError,
+  JsSignatureProvider,
+} from 'eosjs'
 import EosApi from 'eosjs-api'
 import ecc from 'eosjs-ecc'
 import Log from './debugLog'
 
 // const httpEndpoint = 'https://api.eosnewyork.io'  // default, null for cold-storage
 // const httpEndpoint = 'https://jungle2.cryptolions.io'
-const httpEndpoint = 'https://eos-kr.owdin.network:8888'
-// const defaultPrivKey = ''
+const httpEndpoint = 'https://api.jungle.alohaeos.com'
 // const contractAccount = 'eosadditapps'
 
 const eosOption = {
@@ -25,14 +24,16 @@ const eosOption = {
 }
 export const eosApi = EosApi(eosOption)
 
-// const rpc = new JsonRpc(httpEndpoint)
-// const signatureProvider = new JsSignatureProvider([defaultPrivKey])
-// const api = new Api({
-//   rpc,
-//   signatureProvider,
-//   textDecoder: new TextDecoder(),
-//   textEncoder: new TextEncoder(),
-// })
+export function eosJs(privateKey) {
+  const rpc = new JsonRpc(httpEndpoint)
+  const signatureProvider = new JsSignatureProvider([privateKey])
+  return new Api({
+    rpc,
+    signatureProvider,
+    textDecoder: new TextDecoder(),
+    textEncoder: new TextEncoder(),
+  })
+}
 
 export function privToPub(privateKey) {
   try {

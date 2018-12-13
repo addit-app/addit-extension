@@ -13,6 +13,7 @@ import {
 import Sidebar from 'react-sidebar'
 import history from './utils/history'
 import Log from './utils/debugLog'
+import { getCurrentAccount } from './utils/chromeApi'
 import Header from './layouts/Header'
 import SidebarMenu from './layouts/Sidebar'
 import Footer from './layouts/Footer'
@@ -32,6 +33,8 @@ const mql = window.matchMedia('(min-width: 576px)')
 class App extends React.Component {
   constructor(props) {
     super(props)
+
+    getCurrentAccount()
 
     this.state = {
       open: false,
