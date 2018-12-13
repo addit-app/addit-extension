@@ -49,7 +49,7 @@ class Feed extends React.Component {
   }
 
   componentDidMount() {
-    this.fetching = setInterval(this.props.feedStore.getFeed, 5000)
+    this.fetching = setInterval(() => this.props.feedStore.getFeed(this.props.feedStore.url), 5000)
   }
 
   componentWillUnmount() {

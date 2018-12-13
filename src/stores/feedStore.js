@@ -23,10 +23,9 @@ class FeedStore {
   @observable loading = true
 
   @action getFeed(url = this.url) {
-    Log.info('feedStore::getFeed()')
+    Log.info(`feedStore::getFeed(${url})`)
 
     this.loading = true
-    this.feedItems = []
     eosApi.getTableRows(
       true, // json
       'eosadditapps', // contract
@@ -63,6 +62,7 @@ class FeedStore {
         }
       }
     }).catch((err) => {
+      this.deleteFeed()
       Log.error('feedStore::getFeed() - EOS API', err)
     })
 
