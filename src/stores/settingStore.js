@@ -21,7 +21,7 @@ class SettingStore {
 
   @observable currentMenu = '/'
 
-  @observable currentNetwork = 'Local TestNet'
+  @observable currentNetwork = 'JungleNet'
 
   @observable currentEndpoint = ''
 
