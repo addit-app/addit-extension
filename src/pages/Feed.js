@@ -5,9 +5,10 @@ import {
 } from 'mobx-react'
 import {
   Alert,
-  List,
   Col,
+  List,
   Row,
+  message,
 } from 'antd'
 import styled from 'styled-components'
 import QuickEditor from '../components/QuickEditor'
@@ -54,10 +55,12 @@ class Feed extends React.Component {
 
   componentWillUnmount() {
     clearInterval(this.fetching)
+    message.destroy()
   }
 
   render() {
     Log.info('Feed::render()', this.props)
+
     return (
       <div>
         <FlexRow

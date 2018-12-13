@@ -44,10 +44,10 @@ class FeedStore {
             'eosadditapps', // contract
             respURL.rows[index].index, // scope
             'comments', // table
-            0, // key
+            '', // key, deprecated
             this.start, // start
             this.end, // end
-            10, // limit
+            100, // limit
           ).then((respComment) => {
             Log.info(`feedStore::getFeed(${url})`, { url, respComment })
             this.feedItems = respComment.rows.reverse()

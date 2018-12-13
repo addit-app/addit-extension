@@ -1,6 +1,7 @@
 import {
   action,
   observable,
+  runInAction,
 } from 'mobx'
 import accountStore from './accountStore'
 import feedStore from './feedStore'
@@ -13,27 +14,14 @@ class CommentStore {
 
   @observable loading = false
 
-  @observable result = null
+  @observable result = {}
 
   @observable resultModalOpen = false
 
-  @action submit() {
-    this.loading = true
-    return this.api.addComment()
-      .then(action(({ resp }) => {
-        this.result = resp
-      }))
-      .catch((err) => {
-        Log.error('accountStore::readAccount()', err)
-      })
-      .finally(action(() => {
-        this.loading = false
-      }))
-  }
-
   @action write(text) {
     this.comment = text
-    let resp = ''
+    this.loading = true
+    let result = null
 
     try {
       if (isExtension()) {
@@ -44,7 +32,7 @@ class CommentStore {
             if (account === accountStore.currentAccount) {
               const eos = eosJs(items.keyPairs[account])
 
-              resp = eos.transact({
+              result = eos.transact({
                 // add new opinion
                 actions: [{
                   account: 'eosadditapps',
@@ -65,14 +53,14 @@ class CommentStore {
                 expireSeconds: 30,
               })
 
-              Log.info('commentStore::write() - result', resp)
+              Log.info('commentStore::write() - result', this.result)
             }
           })
         })
         /* eslint-enable */
       } else {
         const eos = eosJs(JSON.parse(localStorage.getItem('keyPairs'))[localStorage.getItem('currentAccount')])
-        resp = eos.transact({
+        result = eos.transact({
           // add new opinion
           actions: [{
             account: 'eosadditapps',
@@ -91,15 +79,27 @@ class CommentStore {
         }, {
           blocksBehind: 3,
           expireSeconds: 30,
-        })
+        }).then((resp) => {
+          this.loading = false
+          this.result = resp
+          this.resultModalOpen = true
+          feedStore.getFeed(feedStore.url)
+          Log.info('commentStore::write()::then', { result: this.result, type: typeof this.result })
+        }).catch((err) => {
+          Log.error('commentStore.', err)
+        });
       }
-
-      Log.info('commentStore::write() - result', resp)
+      runInAction(() => {
+        // this.result = result
+        // Log.info('commentStore::write()::runInAction()', { result, type: typeof result })
+        // this.resultModalOpen = true
+        // feedStore.getFeed(feedStore.url)
+        Log.info('commentStore::write()::runInAction', result)
+      })
+      Log.info('commentStore::write() - result', this.result)
     } catch (err) {
       Log.error('commentStore::write()', err)
     }
-
-    feedStore.getFeed(feedStore.url)
   }
 
   @action delete() {
