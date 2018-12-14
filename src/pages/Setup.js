@@ -14,11 +14,13 @@ import {
   H1,
 } from 'glamorous'
 import {
+  createAccount,
   isExtension,
   newWindow,
-  setPassword,
-  setKeyPairs,
   setCurrentAccount,
+  setKeyPairs,
+  setPassword,
+  setStatus,
 } from '../utils/chromeApi'
 import Log from '../utils/debugLog'
 import SetPasswordForm from '../components/SetPasswordForm'
@@ -122,9 +124,9 @@ class Setup extends React.Component {
   done = () => {
     setPassword(this.state.password)
     setKeyPairs(this.state.account, this.state.privateKey)
+    createAccount(this.state.account, this.state.privateKey)
     setCurrentAccount(this.state.account)
-    this.props.settingStore.setStatus('online')
-    this.props.accountStore.createAccount(this.state.account)
+    setStatus('online')
   }
 
   render() {

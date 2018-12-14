@@ -34,6 +34,7 @@ const LogoutMenuItem = styled(Menu.Item)`
   }
 `
 const LogoutNavLink = styled(NavLink)`
+  color: red !important;
   &:hover {
     color: white !important;
   }
@@ -168,8 +169,13 @@ class SidebarMenu extends React.Component {
                 this.props.settingStore.setStatus('locked')
               }}
             >
-              <Icon type='logout' theme='outlined' />
-              <span>Logout</span>
+              <Icon
+                type='logout'
+                theme='outlined'
+              />
+              <span>
+                Logout
+              </span>
             </LogoutNavLink>
           </LogoutMenuItem>
         </Menu>

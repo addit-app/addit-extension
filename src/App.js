@@ -13,7 +13,10 @@ import {
 import Sidebar from 'react-sidebar'
 import history from './utils/history'
 import Log from './utils/debugLog'
-import { getCurrentAccount } from './utils/chromeApi'
+import {
+  getCurrentAccount,
+  getCurrentTabURL,
+} from './utils/chromeApi'
 import Header from './layouts/Header'
 import SidebarMenu from './layouts/Sidebar'
 import Footer from './layouts/Footer'
@@ -35,6 +38,7 @@ class App extends React.Component {
     super(props)
 
     getCurrentAccount()
+    getCurrentTabURL()
 
     this.state = {
       open: false,

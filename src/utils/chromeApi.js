@@ -2,11 +2,12 @@
 /**
  * Chrome API Wrapper
  */
-import Log from './debugLog'
 import settingStore from '../stores/settingStore'
 import accountStore from '../stores/accountStore'
 import feedStore from '../stores/feedStore'
 // import { commentStore } from '../stores/commentStore'
+import Log from './debugLog'
+import { eosJs } from './eosJsApi'
 
 export const sample = {
   version: '0.0.x',
@@ -74,7 +75,7 @@ export function getPassword() {
       /* eslint-disable */
       chrome.storage.local.get('authentication', item => {
         if (item.password !== settingStore.password && JSON.stringify(item) !== '{}') {
-          settingStore.setStatus(item.password)
+          settingStore.status = item.password
           const passwordObj = {
             password,
           }
@@ -112,6 +113,40 @@ export function setPassword(password) {
   }
 }
 
+export function createAccount(account, privateKey) {
+  try {
+    const eos = eosJs(privateKey)
+
+    eos.transact({
+      actions: [{
+        account: 'eosadditapps',
+        name: 'signup',
+        authorization: [{
+          actor: account,
+          permission: 'active',
+        }],
+        data: {
+          account,
+          nickname: account,
+          avatar: '',
+          memo: '',
+        },
+      }],
+    }, {
+      blocksBehind: 3,
+      expireSeconds: 30,
+    }).then((resp) => {
+      Log.info('chromeApi::createAccount() - eos.transact().then', { result: resp })
+    }).catch((err) => {
+      Log.error('chromeApi::createAccount - eos.transact()', err)
+    })
+
+    Log.info('chromeApi::write() - result', this.result)
+  } catch (err) {
+    Log.error('chromeApi::createAccount', err)
+  }
+}
+
 export function getCurrentAccount() {
   try {
     if (isExtension()) {
@@ -129,9 +164,6 @@ export function getCurrentAccount() {
 }
 
 export function setCurrentAccount(account) {
-  accountStore.currentAccount = account
-  localStorage.setItem('currentAccount', account)
-
   try {
     if (isExtension()) {
       /* eslint-disable */
@@ -143,6 +175,9 @@ export function setCurrentAccount(account) {
   } catch (err) {
     Log.error('chromeApi::setCurrentAccount()', err)
   }
+
+  accountStore.currentAccount = account
+  localStorage.setItem('currentAccount', account)
 }
 
 export function getStatus(storeObj = null) {
@@ -167,8 +202,6 @@ export function getStatus(storeObj = null) {
 }
 
 export function setStatus(status) {
-  localStorage.setItem('status', status)
-
   try {
     if (isExtension()) {
       /* eslint-disable */
@@ -180,16 +213,19 @@ export function setStatus(status) {
   } catch (err) {
     Log.error('chromeApi::setStatus()', err)
   }
+
+  localStorage.setItem('status', status)
+  settingStore.status = status
 }
 
 /**
- * Set account and private keys
+ * Set account and private key
  *
  * @param {string} accountName
- * @param {array} privateKeys
+ * @param {array} privateKey
  */
 // TODO: Encrypt Key Pairs
-export function setKeyPairs(accountName, privateKeys) {
+export function setKeyPairs(accountName, privateKey) {
   let pairs = []
   if (isExtension()) {
     try {
@@ -200,7 +236,7 @@ export function setKeyPairs(accountName, privateKeys) {
 
       pairs = {
         ...pairs,
-        [accountName]: privateKeys
+        [accountName]: privateKey
       }
 
       chrome.storage.local.set({
@@ -211,7 +247,7 @@ export function setKeyPairs(accountName, privateKeys) {
       Log.error('chromeApi::setKeyPairs()', err)
     }
   } else {
-    localStorage.setItem('keyPairs', JSON.stringify({ [accountName]: privateKeys }))
+    localStorage.setItem('keyPairs', JSON.stringify({ [accountName]: privateKey }))
   }
 }
 

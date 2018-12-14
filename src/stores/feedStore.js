@@ -25,7 +25,6 @@ class FeedStore {
   @action getFeed(url = this.url) {
     Log.info(`feedStore::getFeed(${url})`)
 
-    this.loading = true
     eosApi.getTableRows(
       true, // json
       'eosadditapps', // contract
@@ -52,6 +51,7 @@ class FeedStore {
             Log.info(`feedStore::getFeed(${url})`, { url, respComment })
             this.feedItems = respComment.rows.reverse()
             this.more = respComment.more
+            this.loading = false
           }).catch((err) => {
             Log.error(`feedStore::getFeed(${url}) - EOS API`, err)
           })
@@ -59,14 +59,15 @@ class FeedStore {
           break
         } else {
           this.indexURL = -1
+          this.feedItems = []
+          this.loading = false
         }
       }
     }).catch((err) => {
-      this.deleteFeed()
       Log.error('feedStore::getFeed() - EOS API', err)
+      this.loading = false
+      this.deleteFeed()
     })
-
-    this.loading = false
   }
 
   @action deleteFeed() {
@@ -75,6 +76,10 @@ class FeedStore {
 
   @action setUrl(url) {
     this.url = url
+  }
+
+  @action vote(type = 1, commentId = 0) {
+    Log.info('feedStore::vote()', { type, commentId })
   }
 }
 

@@ -110,7 +110,7 @@ class Login extends React.Component {
             style={{
               width: '280px',
               margin: '0 auto',
-              marginTop: '40px',
+              marginTop: '4rem',
             }}
           >
             <FormItem>
@@ -129,11 +129,23 @@ class Login extends React.Component {
                 textAlign: 'center',
               }}
             >
-              <Button type='primary' htmlType='submit'>
-                Unlock
-              </Button>
               <div>
-                <a href='https://eos.io' target='_blank' rel='noopener noreferrer'>Restore your accout</a>
+                <Button
+                  type='primary'
+                  htmlType='submit'
+                >
+                  Unlock
+                </Button>
+              </div>
+              <div>
+                <Button
+                  type='danger'
+                  style={{
+                    marginTop: '0.6rem',
+                  }}
+                >
+                  Reset settings
+                </Button>
               </div>
             </FormItem>
           </Form>

@@ -47,6 +47,7 @@ class Settings extends React.Component {
     if (window.confirm('Do you want to reset wallet? This action cannot be undone!')) {
       try {
         resetExtension()
+        window.location.reload()
       } catch (error) {
         Log.error('Settings::factoryReset()', error)
       }
