@@ -31,6 +31,14 @@ class QuickEditor extends React.Component {
     }
   }
 
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.commentStore.loading === false) {
+      message.destroy()
+    }
+
+    return true
+  }
+
   updateStoreURL = () => {
     this.props.feedStore.setUrl(this.state.url)
     this.props.feedStore.getFeed(this.state.url)
@@ -65,10 +73,6 @@ class QuickEditor extends React.Component {
 
   render() {
     Log.info('QuickEditor::render()', this.props, this.state)
-
-    if (this.props.commentStore.loading === false) {
-      message.destroy()
-    }
 
     return (
       <Div
@@ -109,7 +113,7 @@ class QuickEditor extends React.Component {
             marginTop: '0.6rem',
           }}
           onClick={() => {
-            message.loading('Submitting...')
+            message.loading('Submitting...', 10)
             this.props.commentStore.write(this.state.comment)
             this.props.feedStore.getFeed(this.state.url)
 
