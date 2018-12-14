@@ -6,15 +6,16 @@ import {
 import {
   Alert,
   Col,
+  Icon,
   List,
   Row,
+  // Spin,
   message,
 } from 'antd'
 import styled from 'styled-components'
 import QuickEditor from '../components/QuickEditor'
 import CommentCard from '../components/card/CommentCard'
 import Log from '../utils/debugLog'
-import { getCurrentTabURL } from '../utils/chromeApi'
 
 const FlexRow = styled(Row)`
   display: flex;
@@ -45,7 +46,6 @@ class Feed extends React.Component {
   constructor(props) {
     super(props)
 
-    getCurrentTabURL()
     this.props.feedStore.getFeed(this.props.feedStore.url)
   }
 
@@ -89,7 +89,13 @@ class Feed extends React.Component {
                   <CommentCard {...comment} />
                 </List.Item>
               )}
-              loading={this.props.feedStore.loading}
+              loading={{
+                spinning: this.props.feedStore.loading,
+                indicator: (<Icon type='loading' style={{ fontSize: '3rem' }} spin />),
+              }}
+              locale={{
+                emptyText: 'Leave first opinion. :)',
+              }}
             />
           </FlexCol>
         </FlexRow>
