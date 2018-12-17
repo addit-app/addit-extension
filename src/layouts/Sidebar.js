@@ -63,6 +63,8 @@ class SidebarMenu extends React.Component {
   constructor(props) {
     super(props)
 
+    this.props.accountStore.getBalance()
+
     this.props.settingStore.updateCurrentMenu(window.location.href.split('#')[1])
     if (window.location.href.split('#')[1] === '/') {
       this.props.settingStore.updateCurrentMenu('/feed')
@@ -101,9 +103,9 @@ class SidebarMenu extends React.Component {
           <UpperDiv style={{ marginTop: '10px' }}>
             <b>{this.props.accountStore.currentAccount}</b>
           </UpperDiv>
-          {/* <UpperDiv>
-            {accountBalance}
-          </UpperDiv> */}
+          <UpperDiv>
+            {this.props.accountStore.balance}
+          </UpperDiv>
           <div>
             {/* <Tooltip placement='top' title='Copy address'>
               <Clipboard
