@@ -28,11 +28,11 @@ class AccountStore {
       this.currentAccount, // account
       'ADDIT', // symbol
     ).then((resp) => {
-      Log.info('accountStore::getBalance() - EOS API', resp)
+      Log.info('accountStore::getBalance()::eos', resp)
       this.balance = resp[0]
       this.loading = false
     }).catch((err) => {
-      Log.error('accountStore::getBalance() - EOS API', err)
+      Log.error('accountStore::getBalance()::eos', err)
       this.loading = false
     })
   }

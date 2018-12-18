@@ -54,6 +54,7 @@ class CommentStore {
                 this.loading = false
                 this.result = resp
                 this.resultModalOpen = true
+                accountStore.getBalance()
                 feedStore.getFeed(feedStore.url)
                 Log.info('commentStore::write()::then', { result: this.result, type: typeof this.result })
               }).catch((err) => {

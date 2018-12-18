@@ -9,6 +9,7 @@ import {
   Card,
   Icon,
   Tooltip,
+  message,
 } from 'antd'
 import styled from 'styled-components'
 import moment from 'moment'
@@ -50,9 +51,17 @@ const MetaIconLink = styled.a`
   transition: none;
 `
 
-@inject('accountStore')
+@inject('accountStore', 'feedStore')
 @observer
 class CardTemplate extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.accountStore.voteLoading === false) {
+      message.destroy()
+    }
+
+    return true
+  }
+
   render() {
     return (
       <Card
@@ -83,10 +92,22 @@ class CardTemplate extends React.Component {
         </UpperDiv>
 
         <MetaDiv>
-          <MetaIconLink role='presentation'>
+          <MetaIconLink
+            role='presentation'
+            onClick={() => {
+              message.loading('Submitting...', 10)
+              this.props.feedStore.vote(1, this.props.index)
+            }}
+          >
             <Icon type='like' /> {this.props.upvote}
           </MetaIconLink>
-          <MetaIconLink role='presentation'>
+          <MetaIconLink
+            role='presentation'
+            onClick={() => {
+              message.loading('Submitting...', 10)
+              this.props.feedStore.vote(-1, this.props.index)
+            }}
+          >
             <Icon type='dislike' /> {this.props.downvote}
           </MetaIconLink>
         </MetaDiv>

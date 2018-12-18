@@ -5,13 +5,16 @@ import {
 } from 'mobx-react'
 import {
   Alert,
+  Button,
   Col,
   Icon,
   List,
+  Modal,
   Row,
   // Spin,
   message,
 } from 'antd'
+import ReactJson from 'react-json-view'
 import styled from 'styled-components'
 import QuickEditor from '../components/QuickEditor'
 import CommentCard from '../components/card/CommentCard'
@@ -99,6 +102,33 @@ class Feed extends React.Component {
             />
           </FlexCol>
         </FlexRow>
+        <Modal
+          title='Action Results'
+          visible={this.props.feedStore.voteResultModalOpen}
+          onCancel={() => {
+            this.props.feedStore.voteResultModalOpen = false
+          }}
+          footer={[
+            <Button
+              key='ok'
+              onClick={() => {
+                this.props.feedStore.voteResultModalOpen = false
+              }}
+            >
+              Return
+            </Button>,
+          ]}
+          maskClosable
+        >
+          <ReactJson
+            src={this.props.feedStore.voteResult}
+            style={{
+              overflow: 'scroll',
+            }}
+          />
+          {/* {JSON.stringify(this.props.feedStore.voteResult)} */}
+        </Modal>
+
       </div>
     )
   }

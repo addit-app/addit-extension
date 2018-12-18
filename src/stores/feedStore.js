@@ -2,8 +2,15 @@ import {
   action,
   observable,
 } from 'mobx'
+import accountStore from './accountStore'
 import Log from '../utils/debugLog'
-import { eosApi } from '../utils/eosJsApi'
+import {
+  eosApi,
+  eosJs,
+} from '../utils/eosJsApi'
+import {
+  isExtension,
+} from '../utils/chromeApi'
 
 class FeedStore {
   @observable feedItems = []
@@ -21,6 +28,12 @@ class FeedStore {
   @observable indexURL = -1
 
   @observable loading = true
+
+  @observable voteLoading = false
+
+  @observable voteResult = {}
+
+  @observable voteResultModalOpen = false
 
   @action getFeed(url = this.url) {
     Log.info(`feedStore::getFeed(${url})`)
@@ -78,8 +91,103 @@ class FeedStore {
     this.url = url
   }
 
-  @action vote(type = 1, commentId = 0) {
+  @action vote(type = 1, commentId = null) {
     Log.info('feedStore::vote()', { type, commentId })
+    this.voteLoading = true
+
+    try {
+      if (isExtension()) {
+        /* eslint-disable */
+        chrome.storage.local.get('keyPairs', items => {
+          const pairs = items.keyPairs
+          Object.keys(pairs).forEach((account) => {
+            if (account === accountStore.currentAccount && commentId !== null) {
+              const eos = eosJs(items.keyPairs[account])
+
+              eos.transact({
+                // vote
+                actions: [{
+                  account: 'eosadditapps',
+                  name: 'vote',
+                  authorization: [{
+                    actor: accountStore.currentAccount,
+                    permission: 'active',
+                  }],
+                  data: {
+                    account: accountStore.currentAccount,
+                    iopinion: this.indexURL,
+                    icomment: commentId,
+                    vote: type,
+                  },
+                }],
+              }, {
+                blocksBehind: 3,
+                expireSeconds: 30,
+              }).then((resp) => {
+                this.voteLoading = false
+                this.voteResult = resp
+                this.voteResultModalOpen = true
+                accountStore.getBalance()
+                this.getFeed(this.url)
+                Log.info('feedStore::write()::then', { voteResult: this.voteResult, type: typeof this.voteResult })
+              }).catch((err) => {
+                Log.error('feedStore::transact', err)
+              })
+
+              Log.info('feedStore::write() - voteResult', this.voteResult)
+            } else {
+              this.voteLoading = false
+              this.voteResult = {
+                'message': 'Some values are missing or incorrect.',
+                type,
+                commentId,
+                iopinion: this.indexURL,
+                url: this.url,
+              }
+              this.voteResultModalOpen = true
+            }
+          })
+        })
+        /* eslint-enable */
+      } else {
+        const eos = eosJs(JSON.parse(localStorage.getItem('keyPairs'))[localStorage.getItem('currentAccount')])
+        eos.transact({
+          // add new opinion
+          actions: [{
+            account: 'eosadditapps',
+            name: 'vote',
+            authorization: [{
+              actor: accountStore.currentAccount,
+              permission: 'active',
+            }],
+            data: {
+              account: accountStore.currentAccount,
+              iopinion: this.indexURL,
+              icomment: commentId,
+              vote: type,
+            },
+          }],
+        }, {
+          blocksBehind: 3,
+          expireSeconds: 30,
+        }).then((resp) => {
+          this.voteLoading = false
+          this.voteResult = resp
+          this.voteResultModalOpen = true
+          accountStore.getBalance()
+          this.getFeed(this.url)
+          Log.info('feedStore::vote()::eos - then', { voteResult: this.voteResult, type: typeof this.voteResult })
+        }).catch((err) => {
+          this.voteLoading = false
+          this.voteResult = { error: err }
+          this.voteResultModalOpen = true
+          Log.error('feedStore::vote()::eos - err', err)
+        })
+      }
+    } catch (err) {
+      this.voteLoading = false
+      Log.error('feedStore::vote() - err', err)
+    }
   }
 }
 
