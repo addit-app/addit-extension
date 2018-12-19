@@ -1,8 +1,14 @@
 # Addit
-![Addit Banner](/docs/img/addit-banner.png)
+[![Addit Banner](./docs/img/addit-banner.png)](https://chrome.google.com/webstore/detail/addit/kkjjnbagblehmhiefhdippdjnpmiifgl)
+
+
+<p align="center">
+  <a href="https://chrome.google.com/webstore/detail/addit/kkjjnbagblehmhiefhdippdjnpmiifgl" target="_blank">
+    <img src="./docs/img/ChromeWebStore_Badge_v2_496x150.png" alt="Download Addit" width="248" />
+  </a>
+</p>
 
 > Add it and Edit Your Links and Comments
-
 
 Addit 은 링크 기반의 의견 공유 플랫폼입니다. 자신이 마음에 드는 링크에 의견을 달 수 있으며, Upvote / Downvote 를 통해 의견에 대한 리워드를 받을 수 있습니다.
 
