@@ -88,7 +88,7 @@ class QuickEditor extends React.Component {
           addonBefore='URL'
           addonAfter={(
             <span role='presentation' onClick={() => this.updateStoreURL()}>
-              <Icon type='sync' />
+              <Icon type='search' />
             </span>
           )}
           onPressEnter={() => this.updateStoreURL()}
@@ -147,6 +147,7 @@ class QuickEditor extends React.Component {
             style={{
               overflow: 'scroll',
             }}
+            collapsed
           />
           {/* {JSON.stringify(this.props.commentStore.result)} */}
         </Modal>

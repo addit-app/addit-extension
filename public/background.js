@@ -1,5 +1,5 @@
 window.onload = () => {
-  console.log('[ Background.js ]')
+  console.log('[ background.js ]')
   /* eslint-disable */
   chrome.tabs.query({
     'active': true,
@@ -8,6 +8,7 @@ window.onload = () => {
   }, (tabs) => {
     localStorage.setItem('url', tabs[0].url)
     localStorage.setItem('tabs', JSON.stringify(tabs))
+    console.log(`[ background.js ] - ${tabs[0]} - ${tabs}`)
   })
   /* eslint-enable */
 }

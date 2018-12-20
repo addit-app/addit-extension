@@ -5,7 +5,7 @@
   "author": "https://addit.io",
   "description": "Browser Extension for Addit",
   "version": "0.0.4",
-  "content_security_policy": "script-src 'self'  https://ssl.google-analytics.com https://www.google-analytics.com 'unsafe-eval' 'sha256-GgRxrVOKNdB4LrRsVPDSbzvfdV4UqglmviH9GoBJ5jk='; object-src 'self'",
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com/ga.js 'unsafe-eval' 'sha256-GgRxrVOKNdB4LrRsVPDSbzvfdV4UqglmviH9GoBJ5jk='; object-src 'self'",
   "browser_action": {
     "default_popup": "index.html",
     "default_title": "Addit"

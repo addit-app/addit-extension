@@ -2,6 +2,7 @@ import {
   action,
   observable,
 } from 'mobx'
+import ReactGA from 'react-ga'
 import accountStore from './accountStore'
 import Log from '../utils/debugLog'
 import {
@@ -62,6 +63,7 @@ class FeedStore {
             100, // limit
           ).then((respComment) => {
             Log.info(`feedStore::getFeed(${url})`, { url, respComment })
+
             this.feedItems = respComment.rows.reverse()
             this.more = respComment.more
             this.loading = false
@@ -94,6 +96,12 @@ class FeedStore {
   @action vote(type = 1, commentId = null) {
     Log.info('feedStore::vote()', { type, commentId })
     this.voteLoading = true
+
+    ReactGA.event({
+      category: 'Vote',
+      action: type === 1 ? 'Upvote' : 'Downvote',
+      label: `${accountStore.currentAccount} - ${this.indexURL}:${commentId}`,
+    })
 
     try {
       if (isExtension()) {
@@ -131,6 +139,9 @@ class FeedStore {
                 this.getFeed(this.url)
                 Log.info('feedStore::write()::then', { voteResult: this.voteResult, type: typeof this.voteResult })
               }).catch((err) => {
+                this.voteLoading = false
+                this.voteResult = { error: err }
+                this.voteResultModalOpen = true
                 Log.error('feedStore::transact', err)
               })
 
@@ -176,12 +187,12 @@ class FeedStore {
           this.voteResultModalOpen = true
           accountStore.getBalance()
           this.getFeed(this.url)
-          Log.info('feedStore::vote()::eos - then', { voteResult: this.voteResult, type: typeof this.voteResult })
+          Log.info('feedStore::vote()::transact - success', { voteResult: this.voteResult, type: typeof this.voteResult })
         }).catch((err) => {
           this.voteLoading = false
           this.voteResult = { error: err }
           this.voteResultModalOpen = true
-          Log.error('feedStore::vote()::eos - err', err)
+          Log.error('feedStore::vote()::transact - err', err)
         })
       }
     } catch (err) {

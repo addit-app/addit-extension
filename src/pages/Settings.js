@@ -44,14 +44,14 @@ const FlexCol = styled(Col)`
 @observer
 class Settings extends React.Component {
   factoryReset = () => {
-    if (window.confirm('Do you want to reset wallet? This action cannot be undone!')) {
+    if (window.confirm('Do you want to reset settings? This action cannot be undone!')) {
       try {
         resetExtension()
         window.location.reload()
       } catch (error) {
         Log.error('Settings::factoryReset()', error)
       }
-      message.success('Wallet has been reset successfully.')
+      message.success('Addit has been reset successfully.')
     } else {
       message.warning('Cancelled')
     }

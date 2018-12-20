@@ -13,6 +13,7 @@ import {
   Img,
   H1,
 } from 'glamorous'
+import ReactGA from 'react-ga'
 import {
   createAccount,
   isExtension,
@@ -122,6 +123,12 @@ class Setup extends React.Component {
   }
 
   done = () => {
+    ReactGA.event({
+      category: 'Setup',
+      action: 'Setup initial state',
+      label: this.state.account,
+    })
+
     setPassword(this.state.password)
     setKeyPairs(this.state.account, this.state.privateKey)
     createAccount(this.state.account, this.state.privateKey)
@@ -177,7 +184,6 @@ class Setup extends React.Component {
             ? ''
             : (
               <span id='open-popup' role='presentation' onClick={() => newWindow()}>
-                {/* <a id='open-newtab' href={window.location.href} target='_blank' rel='noopener noreferrer'> */}
                 <Button>Open in a new Popup Window</Button>
                 {/* </a> */}
               </span>

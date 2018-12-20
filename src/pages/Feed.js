@@ -53,7 +53,7 @@ class Feed extends React.Component {
   }
 
   componentDidMount() {
-    this.fetching = setInterval(() => this.props.feedStore.getFeed(this.props.feedStore.url), 5000)
+    this.fetching = setInterval(() => this.props.feedStore.getFeed(this.props.feedStore.url), 10000)
   }
 
   componentWillUnmount() {
@@ -125,6 +125,7 @@ class Feed extends React.Component {
             style={{
               overflow: 'scroll',
             }}
+            collapsed
           />
           {/* {JSON.stringify(this.props.feedStore.voteResult)} */}
         </Modal>

@@ -39,7 +39,14 @@ const LogoutNavLink = styled(NavLink)`
     color: white !important;
   }
 `
-const BottomBtn = styled.div`
+const LeaveFeedback = styled.div`
+  bottom: 40px;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  height: 44px;
+`
+const OpenNewWindow = styled.div`
   bottom: 0;
   position: absolute;
   width: 100%;
@@ -181,13 +188,23 @@ class SidebarMenu extends React.Component {
             </LogoutNavLink>
           </LogoutMenuItem>
         </Menu>
+        <LeaveFeedback>
+          <a
+            href='https://t.me/addit_app'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            <TitleIcon type='smile' theme='outlined' />
+            <span>Leave feedback</span>
+          </a>
+        </LeaveFeedback>
         {
           (window.name)
             ? ''
             : (
-              <BottomBtn>
+              <OpenNewWindow>
                 <a
-                  id='open-newtab'
+                  id='open-popup'
                   href='/#'
                   rel='noopener noreferrer'
                   onClick={() => {
@@ -196,9 +213,9 @@ class SidebarMenu extends React.Component {
                   }}
                 >
                   <TitleIcon type='export' theme='outlined' />
-                  <span>Open in a new tab</span>
+                  <span>Open in a new window</span>
                 </a>
-              </BottomBtn>
+              </OpenNewWindow>
             )
         }
       </Div>

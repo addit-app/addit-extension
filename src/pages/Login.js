@@ -11,6 +11,7 @@ import {
   Input,
   message,
 } from 'antd'
+import ReactGA from 'react-ga'
 import {
   Div,
   H1,
@@ -41,6 +42,12 @@ class Login extends React.Component {
 
   onSubmit = () => {
     Log.info('Login::onSubmit()', [this.props.settingStore.password, this.state.password])
+
+    ReactGA.event({
+      category: 'Login',
+      action: 'Unlock to login',
+      label: 'Login Action',
+    })
 
     if (this.props.settingStore.password === this.state.password) {
       this.props.settingStore.setStatus('online')
@@ -97,7 +104,6 @@ class Login extends React.Component {
             ? ''
             : (
               <span id='open-popup' role='presentation' onClick={() => newWindow()}>
-                {/* <a id='open-newtab' href={window.location.href} target='_blank' rel='noopener noreferrer'> */}
                 <Button>Open in a new Popup Window</Button>
                 {/* </a> */}
               </span>

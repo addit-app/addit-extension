@@ -13,6 +13,7 @@ import {
 } from 'antd'
 import styled from 'styled-components'
 import moment from 'moment'
+import Log from '../../utils/debugLog'
 
 // const colors = {
 //   'primary': '#1890ff',
@@ -63,6 +64,8 @@ class CardTemplate extends React.Component {
   }
 
   render() {
+    Log.info('', this.props.vote)
+
     return (
       <Card
         title={(
@@ -113,7 +116,7 @@ class CardTemplate extends React.Component {
         </MetaDiv>
         <RewardDiv>
           <MetaIconLink role='presentation'>
-            <Icon type='dollar' /> {this.props.reward}
+            <Icon type='dollar' /> {this.props.vote.length}
           </MetaIconLink>
         </RewardDiv>
       </Card>
