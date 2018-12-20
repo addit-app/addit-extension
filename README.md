@@ -1,15 +1,19 @@
 # Addit
+> Add your opinion. Rate and discuss anywhere on the Internet.
+
 [![Addit Banner](./docs/img/addit-banner.png)](https://chrome.google.com/webstore/detail/addit/kkjjnbagblehmhiefhdippdjnpmiifgl)
 
+## Installation
+> iOS, Android 앱은 준비중에 있습니다.
 
-<p align="center">
-  <a href="https://chrome.google.com/webstore/detail/addit/kkjjnbagblehmhiefhdippdjnpmiifgl" target="_blank">
-    <img src="./docs/img/ChromeWebStore_Badge_v2_496x150.png" alt="Download Addit" width="248" />
-  </a>
-</p>
+<a href="https://chrome.google.com/webstore/detail/addit/kkjjnbagblehmhiefhdippdjnpmiifgl" target="_blank">
+  <img src="./docs/img/ChromeWebStore_Badge_v2_496x150.png" alt="Download Addit" width="248" />
+</a>
 
-> Add it and Edit Your Links and Comments
+## How to Use
+Addit 은 현재 베타서비스 중이며, [EOS JungleNet](https://monitor.jungletestnet.io) 에서 **Create Account** 에서 계정을 생성하신 후 해당 계정으로 이용하시면 됩니다. 메인넷 런칭 일정은 아직 확정된 바 없습니다.
 
+## Introduction
 Addit 은 링크 기반의 의견 공유 플랫폼입니다. 자신이 마음에 드는 링크에 의견을 달 수 있으며, Upvote / Downvote 를 통해 의견에 대한 리워드를 받을 수 있습니다.
 
 자세한 기능은 아래와 같습니다.
@@ -33,3 +37,7 @@ Addit 은 링크 기반의 의견 공유 플랫폼입니다. 자신이 마음에
 - 기존 대부분의 DApp 과는 다르게 크롬 확장도구와 같은 앱으로 제공되는 서비스이기에 별도의 중앙화된 프론트엔드 서버를 필요로 하지 않음
 - DApp 이면서 동시에 지갑으로 사용 가능하며, DApp 사용을 위해 Scatter 와 같은 별도의 서비스를 필요로 하지 않음
 - MetaMask 나 Scatter 와 같은 방법으로 안전하게 Private Key 관리 및 사용
+
+## Author
+- [CHANN](https://github.com/channprj)
+- [Violetstair](https://github.com/violetstair)
