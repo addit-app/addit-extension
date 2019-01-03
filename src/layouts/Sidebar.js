@@ -108,10 +108,10 @@ class SidebarMenu extends React.Component {
             icon='user'
           />
           <UpperDiv style={{ marginTop: '10px' }}>
-            <b>{this.props.accountStore.currentAccount}</b>
+            <b id='current-account'>{this.props.accountStore.currentAccount}</b>
           </UpperDiv>
           <UpperDiv>
-            {this.props.accountStore.balance}
+            <span id='current-balance'>{this.props.accountStore.balance}</span>
           </UpperDiv>
           <div>
             {/* <Tooltip placement='top' title='Copy address'>
